@@ -1637,7 +1637,9 @@
 
     <!-- Firebase SDKs -->
     <script>
-  const API_BASE = 'http://localhost:5000/api'; // adjust to your backend URL
+  const API_BASE = isLocalhost
+  ? 'http://localhost:5000/api'
+  : 'https://endless-bearth.onrender.com/api'; // adjust to your backend URL
 
   // DOM Elements
   const sidebarToggle            = document.getElementById('sidebarToggle');
