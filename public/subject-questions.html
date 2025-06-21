@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Subject Questions - Edurack</title>
+  <link rel="icon" href="https://i.postimg.cc/k4VZLxVN/cropped-circle-image.png" type="image/png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+      --secondary: #06b6d4;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-inverse: #ffffff;
+      
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --bg-dark: #0f172a;
+      --bg-card: #ffffff;
+      
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+      
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-2xl: 1.5rem;
+      
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-bounce: 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* ===== Reset & Basics ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-secondary);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      position: relative;
+      line-height: 1.6;
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      transition: var(--transition-normal);
+    }
+
+    .logo img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      transition: var(--transition-normal);
+    }
+
+    .theme-toggle:hover {
+      color: var(--primary);
+      background: var(--bg-secondary);
+    }
+
+    .user-menu {
+      position: relative;
+    }
+
+    .user-avatar {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-inverse);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-normal);
+      font-size: 1.125rem;
+    }
+
+    .user-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .user-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+      min-width: 200px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: var(--transition-normal);
+      margin-top: 0.5rem;
+      z-index: 1001;
+    }
+
+    .user-dropdown.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition-normal);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-item:hover {
+      background: var(--bg-secondary);
+      color: var(--primary);
+    }
+
+    .dropdown-item i {
+      font-size: 1rem;
+      width: 20px;
+    }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      position: fixed;
+      top: 80px;
+      left: 0;
+      width: 280px;
+      height: calc(100vh - 80px);
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      padding: 2rem 0;
+      overflow-y: auto;
+      z-index: 999;
+      transition: var(--transition-normal);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .sidebar.collapsed {
+      width: 80px;
+    }
+
+    .sidebar-header {
+      padding: 0 2rem 1rem 2rem;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 1rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: var(--transition-normal);
+    }
+
+    .sidebar.collapsed .sidebar-title {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .sidebar-collapse {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border: none;
+      border-radius: var(--radius-md);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-normal);
+    }
+
+    .sidebar-collapse:hover {
+      background: var(--primary);
+      color: var(--text-inverse);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 1rem;
+    }
+
+    .sidebar-item {
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-lg);
+      transition: var(--transition-normal);
+      font-weight: 500;
+      position: relative;
+    }
+
+    .sidebar-link:hover {
+      background: var(--bg-tertiary);
+      color: var(--primary);
+      transform: translateX(5px);
+    }
+
+    .sidebar-link.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--text-inverse);
+      transform: translateX(5px);
+    }
+
+    .sidebar-link i {
+      font-size: 1.25rem;
+      width: 24px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-link span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: var(--transition-normal);
+    }
+
+    .sidebar.collapsed .sidebar-link span {
+      opacity: 0;
+      visibility: hidden;
+      width: 0;
+    }
+
+    .sidebar.collapsed .sidebar-link {
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      top: 1.25rem;
+      left: 1rem;
+      z-index: 1001;
+      background: var(--primary);
+      color: var(--text-inverse);
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      cursor: pointer;
+      font-size: 1.125rem;
+    }
+
+    /* ===== Main Content ===== */
+    .main-content {
+      margin-left: 280px;
+      margin-top: 80px;
+      padding: 2rem;
+      min-height: calc(100vh - 80px);
+      transition: var(--transition-normal);
+    }
+
+    .main-content.expanded {
+      margin-left: 80px;
+    }
+
+    /* ===== Page Header ===== */
+    .page-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: var(--radius-2xl);
+      padding: 2rem;
+      color: var(--text-inverse);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 300px;
+      background: url("data:image/svg+xml,%3Csvg width='300' height='300' viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M150 0C67.16 0 0 67.16 0 150s67.16 150 150 150 150-67.16 150-150S232.84 0 150 0zm0 270c-66.27 0-120-53.73-120-120s53.73-120 120-120 120 53.73 120 120-53.73 120-120 120z'/%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.1;
+    }
+
+    .page-header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .page-header-subtitle {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+
+    .page-header-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    /* ===== Chapter Selection Section ===== */
+    .chapters-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-md);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .chapters-header {
+      margin-bottom: 2rem;
+    }
+
+    .chapters-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .chapters-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .chapter-filters {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .filter-chip {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-2xl);
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-normal);
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .filter-chip.active {
+      background: var(--primary);
+      color: var(--text-inverse);
+      border-color: var(--primary);
+    }
+
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .chapter-card {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      cursor: pointer;
+      transition: var(--transition-normal);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .chapter-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--chapter-color, var(--primary));
+      transform: scaleX(0);
+      transition: var(--transition-normal);
+    }
+
+    .chapter-card:hover {
+      background: var(--bg-card);
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--primary-light);
+    }
+
+    .chapter-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .chapter-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-xl);
+      background: var(--chapter-color, var(--primary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-inverse);
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chapter-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.2) 100%);
+    }
+
+    .chapter-content {
+      flex: 1;
+    }
+
+    .chapter-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .chapter-questions {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-progress {
+      width: 100%;
+      height: 6px;
+      background: var(--border-light);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .chapter-progress-fill {
+      height: 100%;
+      background: var(--chapter-color, var(--primary));
+      border-radius: var(--radius-sm);
+      transition: var(--transition-normal);
+    }
+
+    .chapter-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== Filter Section ===== */
+    .filter-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .filter-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .filter-title i {
+      color: var(--primary);
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-label {
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .filter-select {
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      width: 100%;
+      transition: var(--transition-normal);
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-light);
+    }
+
+    .filter-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    /* ===== Questions Section ===== */
+    .questions-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .question-box {
+      background: var(--bg-secondary);
+      padding: 1.5rem 2rem;
+      margin: 1rem 0;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      user-select: none;
+      color: var(--text-primary);
+      transition: var(--transition-normal);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      transform: scaleX(0);
+      transition: var(--transition-normal);
+    }
+
+    .question-box:hover {
+      background: var(--bg-tertiary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-light);
+    }
+
+    .question-box:hover::before {
+      transform: scaleX(1);
+    }
+
+    .question-text {
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    .meta {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-top: 0.75rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .meta-item i {
+      color: var(--primary);
+    }
+
+    /* ===== Buttons ===== */
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-lg);
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: var(--transition-normal);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: none;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--text-inverse);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-primary);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-inverse);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--text-inverse);
+    }
+
+    /* ===== Dark Mode ===== */
+    body.dark-mode {
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --bg-card: #1e293b;
+      --border: #334155;
+      --border-light: #475569;
+    }
+
+    /* ===== Sidebar Overlay ===== */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-normal);
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== Responsive Design ===== */
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .sidebar-toggle {
+        display: block;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .main-content.expanded {
+        margin-left: 0;
+      }
+
+      .sidebar-collapse {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        padding: 0 1rem;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .page-header {
+        padding: 1.5rem;
+      }
+
+      .page-header h2 {
+        font-size: 1.5rem;
+      }
+
+      .chapters-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chapter-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .meta {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .chapter-filters {
+        justify-content: center;
+      }
+
+      .filter-actions {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 1.5rem;
+      }
+
+      .logo img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .nav-right {
+        gap: 1rem;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+
+      .page-header h2 {
+        font-size: 1.25rem;
+      }
+
+      .chapters-section {
+        padding: 1.5rem;
+      }
+
+      .chapter-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+
+  <!-- FontAwesome CDN for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-left">
+        <button class="sidebar-toggle" id="sidebarToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <a href="home.html" class="logo">
+          <img src="https://i.postimg.cc/nV4TrRtj/cropped-circle-image-removebg-preview.png" alt="Edurack">
+          Edurack
+        </a>
+      </div>
+      
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle">
+          <i class="fas fa-moon"></i>
+        </button>
+        
+        <div class="user-menu">
+          <div class="user-avatar" id="userAvatar">
+            <span id="userInitials">JD</span>
+          </div>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="settings.html" class="dropdown-item">
+              <i class="fas fa-user"></i>
+              Profile
+            </a>
+            <a href="contact.html" class="dropdown-item">
+              <i class="fas fa-headset"></i>
+              Support
+            </a>
+            <a href="#" class="dropdown-item" id="logoutBtn">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Sidebar Overlay ===== -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Navigation</div>
+      <button class="sidebar-collapse" id="sidebarCollapse">
+        <i class="fas fa-chevron-left" id="collapseIcon"></i>
+      </button>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="sidebar-item">
+        <a href="#" class="sidebar-link active" id="btnQuestions">
+          <i class="fas fa-question-circle"></i>
+          <span>Questions</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" class="sidebar-link" id="btnBookmarks">
+          <i class="fas fa-bookmark"></i>
+          <span>Bookmarks</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" class="sidebar-link" id="btnStats">
+          <i class="fas fa-chart-line"></i>
+          <span>Stats</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" class="sidebar-link" id="btnLeaderboard">
+          <i class="fas fa-trophy"></i>
+          <span>Leaderboard</span>
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <!-- ===== Main Content ===== -->
+  <main class="main-content" id="mainContent">
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="page-header-content">
+        <h2 id="heading">
+          <i class="fas fa-file-alt"></i>
+          Loading chapters...
+        </h2>
+        <div class="page-header-subtitle" id="headerSubtitle">
+          Select a chapter to start practicing questions
+        </div>
+        <div class="page-header-actions">
+          <button class="btn btn-outline" id="backToChapters" style="display: none;">
+            <i class="fas fa-arrow-left"></i>
+            Back to Chapters
+          </button>
+          <button class="btn btn-outline" id="bookmarkPage">
+            <i class="fas fa-bookmark"></i>
+            View Bookmarks
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Section (Hidden by default, shown when questions are loaded) -->
+    <section class="filter-section" id="filterSection" style="display: none;">
+      <h3 class="filter-title">
+        <i class="fas fa-filter"></i>
+        Filter Questions
+      </h3>
+      
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label class="filter-label">Difficulty</label>
+          <select class="filter-select" id="difficultyFilter">
+            <option value="all">All Difficulties</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Year</label>
+          <select class="filter-select" id="yearFilter">
+            <option value="all">All Years</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Shift</label>
+          <select class="filter-select" id="shiftFilter">
+            <option value="all">All Shifts</option>
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Question Type</label>
+          <select class="filter-select" id="typeFilter">
+            <option value="all">All Types</option>
+            <option value="mcq">Multiple Choice</option>
+            <option value="integer">Integer Type</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="filter-actions">
+        <button class="btn btn-secondary" id="resetFilters">
+          <i class="fas fa-undo"></i>
+          Reset Filters
+        </button>
+        <button class="btn btn-primary" id="applyFilters">
+          <i class="fas fa-check"></i>
+          Apply Filters
+        </button>
+      </div>
+    </section>
+
+    <!-- Questions Section -->
+    <section id="questionsSection">
+      <div class="chapters-section" id="chaptersContainer"></div>
+      <div class="questions-section" id="questionsContainer" style="display: none;"></div>
+    </section>
+
+    <!-- Bookmarks Section (Placeholder) -->
+    <section id="bookmarksSection" style="display:none;">
+      <div class="chapters-section">
+        <h2>Bookmarks</h2>
+        <p>Bookmarks content coming soon...</p>
+      </div>
+    </section>
+
+    <!-- Stats Section (Placeholder) -->
+    <section id="statsSection" style="display:none;">
+      <div class="chapters-section">
+        <h2>Stats</h2>
+        <p>Stats content coming soon...</p>
+      </div>
+    </section>
+
+    <!-- Leaderboard Section (Placeholder) -->
+    <section id="leaderboardSection" style="display:none;">
+      <div class="chapters-section">
+        <h2>Leaderboard</h2>
+        <p>Leaderboard content coming soon...</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ===== Login & User Logic =====
+    const userAvatar = document.getElementById('userAvatar');
+    const userDropdown = document.getElementById('userDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const themeToggle = document.getElementById('themeToggle');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarCollapse = document.getElementById('sidebarCollapse');
+    const collapseIcon = document.getElementById('collapseIcon');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const backToChaptersBtn = document.getElementById('backToChapters');
+    const bookmarkPageBtn = document.getElementById('bookmarkPage');
+    const filterSection = document.getElementById('filterSection');
+    const resetFiltersBtn = document.getElementById('resetFilters');
+    const applyFiltersBtn = document.getElementById('applyFilters');
+    
+    let currentUserData = {};
+    let currentChapter = null;
+    let allQuestions = [];
+    let filteredQuestions = [];
+
+    // Chapter colors for variety
+    const chapterColors = [
+      '#6366f1', '#06b6d4', '#f59e0b', '#10b981', '#ef4444', 
+      '#8b5cf6', '#f97316', '#ec4899', '#14b8a6', '#84cc16'
+    ];
+
+    // Chapter icons
+    const chapterIcons = [
+      'fas fa-calculator', 'fas fa-atom', 'fas fa-wave-square', 'fas fa-magnet',
+      'fas fa-bolt', 'fas fa-eye', 'fas fa-thermometer-half', 'fas fa-compress-arrows-alt',
+      'fas fa-expand-arrows-alt', 'fas fa-circle', 'fas fa-square-root-alt', 'fas fa-infinity'
+    ];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      initializeTheme();
+      setupEventListeners();
+      await fetchUserData();
+      loadUserPreferences();
+      setupTabListeners();
+      fetchChapters(); // Load chapters for Questions tab by default
+    });
+
+    function initializeTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+      }
+    }
+
+    function setupEventListeners() {
+      // Theme toggle
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const icon = themeToggle.querySelector('i');
+        const isDark = document.body.classList.contains('dark-mode');
+        icon.classList.toggle('fa-sun', isDark);
+        icon.classList.toggle('fa-moon', !isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+
+      // Sidebar toggle for mobile
+      sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+        sidebarOverlay.classList.toggle('active');
+      });
+      
+      // Sidebar collapse for desktop
+      sidebarCollapse.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded');
+        
+        if (sidebar.classList.contains('collapsed')) {
+          collapseIcon.classList.replace('fa-chevron-left', 'fa-chevron-right');
+        } else {
+          collapseIcon.classList.replace('fa-chevron-right', 'fa-chevron-left');
+        }
+      });
+      
+      sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+      });
+      
+      userAvatar.addEventListener('click', (e) => {
+        e.stopPropagation();
+        userDropdown.classList.toggle('active');
+      });
+      
+      document.addEventListener('click', (e) => {
+        if (!userAvatar.contains(e.target) && !userDropdown.contains(e.target)) {
+          userDropdown.classList.remove('active');
+        }
+      });
+      
+      logoutBtn.addEventListener('click', handleLogout);
+      
+      bookmarkPageBtn.addEventListener('click', () => {
+        const userId = currentUserData.id || 'guest';
+        localStorage.setItem('bookmarkUserId', userId);
+        window.location.href = 'bookmark.html';
+      });
+
+      backToChaptersBtn.addEventListener('click', () => {
+        currentChapter = null;
+        document.getElementById('questionsContainer').style.display = 'none';
+        document.getElementById('chaptersContainer').style.display = 'block';
+        filterSection.style.display = 'none';
+        backToChaptersBtn.style.display = 'none';
+        fetchChapters();
+      });
+
+      resetFiltersBtn.addEventListener('click', resetFilters);
+      applyFiltersBtn.addEventListener('click', applyFilters);
+    }
+
+    function resetFilters() {
+      document.getElementById('difficultyFilter').value = 'all';
+      document.getElementById('yearFilter').value = 'all';
+      document.getElementById('shiftFilter').value = 'all';
+      document.getElementById('typeFilter').value = 'all';
+      
+      filteredQuestions = [...allQuestions];
+      displayQuestions(filteredQuestions);
+    }
+
+    function applyFilters() {
+      const difficulty = document.getElementById('difficultyFilter').value;
+      const year = document.getElementById('yearFilter').value;
+      const shift = document.getElementById('shiftFilter').value;
+      const type = document.getElementById('typeFilter').value;
+
+      filteredQuestions = allQuestions.filter(q => {
+        return (difficulty === 'all' || q.difficulty === difficulty) &&
+               (year === 'all' || q.year === year) &&
+               (shift === 'all' || q.shift === shift) &&
+               (type === 'all' || q.type === type);
+      });
+
+      displayQuestions(filteredQuestions);
+    }
+
+    async function fetchUserData() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.warn('No token found, redirecting to login...');
+        window.location.href = '/index.html';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/user', {
+          method: 'GET',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+
+        if (res.status === 401 || res.status === 403) {
+          console.warn('Unauthorized. Clearing token and redirecting...');
+          localStorage.removeItem('token');
+          window.location.href = '/index.html';
+          return;
+        }
+
+        if (!res.ok) {
+          console.error('Unexpected error while fetching user:', res.statusText);
+          return;
+        }
+
+        const data = await res.json();
+        const userData = data.user;
+
+        if (!userData) {
+          console.warn('No user returned. Redirecting...');
+          localStorage.removeItem('token');
+          window.location.href = '/index.html';
+          return;
+        }
+
+        currentUserData = userData;
+
+        // Extract initials (first two letters of fullName)
+        const initials = (userData.fullName || 'User')
+          .split(' ')
+          .map(n => n[0])
+          .join('')
+          .toUpperCase()
+          .substring(0, 2);
+
+        document.getElementById('userInitials').textContent = initials;
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+        localStorage.removeItem('token');
+        window.location.href = '/index.html';
+      }
+    }
+
+    function handleLogout(e) {
+      e.preventDefault();
+      if (confirm('Are you sure you want to log out?')) {
+        fetch('/api/logout', { method: 'POST', credentials: 'include' })
+          .then(() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('selectedExam');
+            localStorage.removeItem('selectedSubject');
+            window.location.href = '/index.html';
+          })
+          .catch(err => {
+            console.error('Logout failed:', err);
+            alert('Logout failed. Try again.');
+          });
+      }
+    }
+
+    function loadUserPreferences() {
+      const selectedExam = localStorage.getItem('selectedExam');
+      // You can restore the selectedExam or other preferences here if needed
+    }
+
+    // ===== Sidebar Tab Logic =====
+    function setupTabListeners() {
+      const tabs = ['Questions', 'Bookmarks', 'Stats', 'Leaderboard'];
+
+      const tabButtons = {
+        Questions: document.getElementById('btnQuestions'),
+        Bookmarks: document.getElementById('btnBookmarks'),
+        Stats: document.getElementById('btnStats'),
+        Leaderboard: document.getElementById('btnLeaderboard'),
+      };
+
+      const tabSections = {
+        Questions: document.getElementById('questionsSection'),
+        Bookmarks: document.getElementById('bookmarksSection'),
+        Stats: document.getElementById('statsSection'),
+        Leaderboard: document.getElementById('leaderboardSection'),
+      };
+
+      tabs.forEach(tabName => {
+        tabButtons[tabName].addEventListener('click', (e) => {
+          e.preventDefault();
+          // Activate selected tab
+          tabs.forEach(name => {
+            if (name === tabName) {
+              tabButtons[name].classList.add('active');
+              tabSections[name].style.display = 'block';
+            } else {
+              tabButtons[name].classList.remove('active');
+              tabSections[name].style.display = 'none';
+            }
+          });
+
+          // If Questions tab, refresh chapters
+          if (tabName === 'Questions') {
+            fetchChapters();
+          }
+        });
+      });
+    }
+
+    // ===== Questions / Chapters Logic =====
+    const exam = localStorage.getItem('selectedExam');
+    const subject = localStorage.getItem('selectedSubject');
+
+    const heading = document.getElementById('heading');
+    const headerSubtitle = document.getElementById('headerSubtitle');
+    const chaptersContainer = document.getElementById('chaptersContainer');
+    const questionsContainer = document.getElementById('questionsContainer');
+
+    async function fetchChapters() {
+      if (!exam || !subject) {
+        heading.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Please select an exam and subject first.`;
+        headerSubtitle.textContent = "Go back to the previous page to select your exam and subject";
+        chaptersContainer.innerHTML = "";
+        questionsContainer.innerHTML = "";
+        return;
+      }
+
+      heading.innerHTML = `<i class="fas fa-book"></i> ${subject} Chapters`;
+      headerSubtitle.textContent = `${exam.toUpperCase()} • Select a chapter to start practicing questions`;
+      chaptersContainer.innerHTML = "<p>Loading chapters...</p>";
+      questionsContainer.innerHTML = "";
+      filterSection.style.display = 'none';
+      backToChaptersBtn.style.display = 'none';
+
+      try {
+        const res = await fetch(`/api/questions/chapters?exam=${exam}&subject=${subject}`);
+        if (!res.ok) throw new Error("Failed to fetch chapters");
+
+        const chapters = await res.json();
+        
+        if (!chapters.length) {
+          chaptersContainer.innerHTML = `
+            <div class="chapters-header">
+              <h3 class="chapters-title">
+                <i class="fas fa-info-circle"></i>
+                No Chapters Found
+              </h3>
+              <p class="chapters-subtitle">No chapters are available for this subject yet.</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Create beautiful chapter cards
+        chaptersContainer.innerHTML = `
+          <div class="chapters-header">
+            <h3 class="chapters-title">
+              <i class="fas fa-layer-group"></i>
+              Available Chapters
+            </h3>
+            <p class="chapters-subtitle">Choose a chapter to start practicing questions • ${chapters.length} chapters available</p>
+            
+            <div class="chapter-filters">
+              <div class="filter-chip active" data-filter="all">All Chapters</div>
+              <div class="filter-chip" data-filter="easy">Easy</div>
+              <div class="filter-chip" data-filter="medium">Medium</div>
+              <div class="filter-chip" data-filter="hard">Hard</div>
+            </div>
+          </div>
+          
+          <div class="chapters-grid" id="chaptersGrid"></div>
+        `;
+
+        const chaptersGrid = document.getElementById('chaptersGrid');
+        
+        chapters.forEach((chapter, index) => {
+          const color = chapterColors[index % chapterColors.length];
+          const icon = chapterIcons[index % chapterIcons.length];
+          const questionCount = Math.floor(Math.random() * 200) + 50; // Random for demo
+          const progress = Math.floor(Math.random() * 100);
+          
+          const chapterCard = document.createElement('div');
+          chapterCard.className = 'chapter-card';
+          chapterCard.style.setProperty('--chapter-color', color);
+          chapterCard.innerHTML = `
+            <div class="chapter-icon">
+              <i class="${icon}"></i>
+            </div>
+            <div class="chapter-content">
+              <h4 class="chapter-name">${chapter}</h4>
+              <p class="chapter-questions">${questionCount} Questions Available</p>
+              <div class="chapter-progress">
+                <div class="chapter-progress-fill" style="width: ${progress}%"></div>
+              </div>
+              <div class="chapter-stats">
+                <span>Progress: ${progress}%</span>
+                <span>Difficulty: Medium</span>
+              </div>
+            </div>
+          `;
+          
+          chapterCard.onclick = () => fetchQuestionsForChapter(chapter);
+          chaptersGrid.appendChild(chapterCard);
+        });
+
+        // Setup filter chips
+        const filterChips = document.querySelectorAll('.filter-chip');
+        filterChips.forEach(chip => {
+          chip.addEventListener('click', () => {
+            filterChips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            // Filter logic would go here
+          });
+        });
+
+      } catch (err) {
+        console.error(err);
+        chaptersContainer.innerHTML = `
+          <div class="chapters-header">
+            <h3 class="chapters-title">
+              <i class="fas fa-exclamation-triangle"></i>
+              Error Loading Chapters
+            </h3>
+            <p class="chapters-subtitle">Failed to load chapters. Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+
+    async function fetchQuestionsForChapter(chapter) {
+      currentChapter = chapter;
+      heading.innerHTML = `<i class="fas fa-question-circle"></i> ${chapter} Questions`;
+      headerSubtitle.textContent = `Practice questions from ${chapter} chapter`;
+      questionsContainer.innerHTML = "<p>Loading questions...</p>";
+      
+      // Show questions container and hide chapters
+      document.getElementById('chaptersContainer').style.display = 'none';
+      questionsContainer.style.display = 'block';
+      filterSection.style.display = 'block';
+      backToChaptersBtn.style.display = 'inline-flex';
+
+      try {
+        const res = await fetch(`/api/questions?exam=${exam}&subject=${subject}&chapter=${encodeURIComponent(chapter)}`);
+        if (!res.ok) throw new Error("Failed to fetch questions");
+
+        const questions = await res.json();
+        allQuestions = questions;
+        filteredQuestions = [...questions];
+
+        displayQuestions(filteredQuestions);
+      } catch (err) {
+        console.error(err);
+        questionsContainer.innerHTML = "<p>Error loading questions.</p>";
+      }
+    }
+
+    function displayQuestions(questions) {
+      questionsContainer.innerHTML = "";
+
+      if (!questions.length) {
+        questionsContainer.innerHTML = "<p>No questions found with current filters.</p>";
+        return;
+      }
+
+      questions.forEach((q, i) => {
+        const div = document.createElement('div');
+        div.className = 'question-box';
+        div.innerHTML = `
+          <div class="question-text"><strong>Q${i + 1}.</strong> ${q.question}</div>
+          <div class="meta">
+            <div class="meta-item">
+              <i class="fas fa-calendar"></i>
+              <span>${q.date} ${q.month} ${q.year}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-clock"></i>
+              <span>${q.shift}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-tag"></i>
+              <span>${q.type || 'MCQ'}</span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-chart-bar"></i>
+              <span>${q.difficulty || 'Medium'}</span>
+            </div>
+          </div>
+        `;
+        div.onclick = () => {
+          localStorage.setItem('questionId', q.questionId);
+          window.location.href = 'testpage.html';
+        };
+        questionsContainer.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

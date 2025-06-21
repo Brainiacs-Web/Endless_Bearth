@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Payment Portal - Eduracks</title>
+  <link rel="icon" href="https://i.postimg.cc/k4VZLxVN/cropped-circle-image.png" type="image/png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <!-- Razorpay Checkout script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+      --primary-ultra-light: #e0e7ff;
+      --secondary: #06b6d4;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --text-inverse: #ffffff;
+      
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --bg-quaternary: #e2e8f0;
+      --bg-card: #ffffff;
+      --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --bg-gradient-light: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      --border-focus: #6366f1;
+      
+      --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+      
+      --radius-xs: 0.25rem;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-2xl: 1.5rem;
+      --radius-3xl: 2rem;
+      --radius-full: 9999px;
+      
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+      
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --spacing-2xl: 3rem;
+      --spacing-3xl: 4rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--bg-secondary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Header */
+    .header {
+      background: var(--bg-gradient);
+      color: var(--text-inverse);
+      padding: var(--spacing-2xl) 0;
+      position: relative;
+      overflow: hidden;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.3;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-xl);
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-full);
+      padding: var(--spacing-sm) var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      margin-bottom: var(--spacing-md);
+      letter-spacing: -0.02em;
+    }
+
+    .header p {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--spacing-xl);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Progress Steps */
+    .progress-container {
+      background: var(--bg-card);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-2xl);
+      margin: -60px auto var(--spacing-2xl);
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--border);
+      position: relative;
+      z-index: 10;
+    }
+
+    .progress-header {
+      text-align: center;
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .progress-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .progress-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .progress-line {
+      position: absolute;
+      top: 25px;
+      left: 50px;
+      right: 50px;
+      height: 3px;
+      background: var(--bg-quaternary);
+      border-radius: var(--radius-full);
+      z-index: 1;
+    }
+
+    .progress-line-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-full);
+      transition: width var(--transition-slow);
+      width: 0%;
+      position: relative;
+    }
+
+    .progress-line-fill::after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: -3px;
+      width: 9px;
+      height: 9px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px var(--bg-card);
+    }
+
+    .step {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-md);
+      flex: 1;
+      max-width: 200px;
+    }
+
+    .step-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      border: 3px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      transition: all var(--transition-normal);
+      position: relative;
+      cursor: default;
+    }
+
+    .step-circle.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-color: var(--primary);
+      color: var(--text-inverse);
+      transform: scale(1.1);
+      box-shadow: 0 0 0 4px var(--primary-ultra-light), var(--shadow-lg);
+    }
+
+    .step-circle.completed {
+      background: linear-gradient(135deg, var(--success), #059669);
+      border-color: var(--success);
+      color: var(--text-inverse);
+      transform: scale(1.05);
+    }
+
+    .step-circle.completed::after {
+      content: '✓';
+      position: absolute;
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
+
+    .step-content {
+      text-align: center;
+    }
+
+    .step-label {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: var(--spacing-xs);
+      line-height: 1.4;
+    }
+
+    .step-description {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      line-height: 1.3;
+    }
+
+    .step.active .step-label {
+      color: var(--primary);
+    }
+
+    .step.active .step-description {
+      color: var(--text-secondary);
+    }
+
+    .step.completed .step-label {
+      color: var(--success);
+    }
+
+    .step.completed .step-description {
+      color: var(--text-secondary);
+    }
+
+    /* Phase Cards */
+    .phase-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-2xl);
+      padding: var(--spacing-2xl);
+      margin-bottom: var(--spacing-xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phase-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .phase-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: var(--spacing-xl);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+
+    .phase-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-inverse);
+      font-size: 1.25rem;
+    }
+
+    /* Plan Details */
+    .plan-details {
+      background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-quaternary));
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-details::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, var(--primary-ultra-light) 0%, transparent 70%);
+      opacity: 0.5;
+    }
+
+    .plan-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-lg);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border);
+    }
+
+    .plan-badge {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--text-inverse);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .plan-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .plan-item:last-child {
+      border-bottom: none;
+    }
+
+    .plan-label {
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .plan-value {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1.125rem;
+    }
+
+    .price-highlight {
+      color: var(--primary);
+      font-size: 1.75rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* User Details */
+    .user-details {
+      background: linear-gradient(135deg, var(--success-light), #f0fdf4);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+      border: 1px solid #bbf7d0;
+      position: relative;
+    }
+
+    .user-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .user-avatar {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--success), #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-inverse);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .user-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid rgba(34, 197, 94, 0.1);
+    }
+
+    .user-item:last-child {
+      border-bottom: none;
+    }
+
+    .user-label {
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .user-value {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Form Elements */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--spacing-md) var(--spacing-lg);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-xl);
+      font-size: 1rem;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      transition: all var(--transition-normal);
+      font-family: inherit;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 4px var(--primary-ultra-light);
+      transform: translateY(-1px);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-light);
+    }
+
+    .form-input:valid {
+      border-color: var(--success);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: var(--spacing-lg) var(--spacing-2xl);
+      border: none;
+      border-radius: var(--radius-xl);
+      font-size: 1.125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      text-decoration: none;
+      min-width: 200px;
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left var(--transition-slow);
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--text-inverse);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: var(--text-inverse);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      margin-top: var(--spacing-xl);
+    }
+
+    /* Security Features */
+    .security-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-xl);
+    }
+
+    .security-item {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      text-align: center;
+      border: 1px solid var(--border);
+      transition: var(--transition-normal);
+    }
+
+    .security-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .security-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--success), #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-md);
+      color: var(--text-inverse);
+      font-size: 1.25rem;
+    }
+
+    .security-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .security-description {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* Loading State */
+    .loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .loading::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-left: var(--spacing-sm);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Android Optimizations */
+    @media (max-width: 768px) {
+      .container {
+        padding: var(--spacing-md);
+      }
+
+      .progress-container {
+        margin: -40px auto var(--spacing-xl);
+        padding: var(--spacing-xl);
+      }
+
+      .progress-steps {
+        flex-direction: column;
+        gap: var(--spacing-xl);
+      }
+
+      .progress-line {
+        display: none;
+      }
+
+      .step {
+        flex-direction: row;
+        text-align: left;
+        max-width: none;
+      }
+
+      .step-content {
+        text-align: left;
+        flex: 1;
+      }
+
+      .header {
+        padding: var(--spacing-xl) 0;
+        min-height: 160px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .phase-card {
+        padding: var(--spacing-xl);
+      }
+
+      .phase-title {
+        font-size: 1.5rem;
+      }
+
+      .plan-header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: flex-start;
+      }
+
+      .plan-item,
+      .user-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+      }
+
+      .security-features {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        width: 100%;
+        padding: var(--spacing-lg);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: var(--spacing-lg) 0;
+      }
+
+      .header h1 {
+        font-size: 1.75rem;
+      }
+
+      .progress-container {
+        margin: -30px auto var(--spacing-lg);
+        padding: var(--spacing-lg);
+      }
+
+      .phase-card {
+        padding: var(--spacing-lg);
+      }
+
+      .step-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+
+    /* Touch improvements for Android */
+    @media (hover: none) and (pointer: coarse) {
+      .btn {
+        min-height: 48px;
+      }
+      
+      .form-input {
+        min-height: 48px;
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
+      
+      .step-circle {
+        min-width: 48px;
+        min-height: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-badge">
+        <i class="fas fa-shield-alt"></i>
+        <span>Secure Payment Gateway</span>
+      </div>
+      <h1>Complete Your Payment</h1>
+      <p>Experience seamless and secure payment processing with bank-level encryption and instant verification</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Progress Steps -->
+    <div class="progress-container">
+      <div class="progress-header">
+        <h2 class="progress-title">Payment Process</h2>
+        <p class="progress-subtitle">Follow these simple steps to complete your secure payment</p>
+      </div>
+      
+      <div class="progress-steps">
+        <div class="progress-line">
+          <div class="progress-line-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="step active" id="step1">
+          <div class="step-circle">1</div>
+          <div class="step-content">
+            <div class="step-label">Plan Selection</div>
+            <div class="step-description">Review your chosen plan</div>
+          </div>
+        </div>
+        
+        <div class="step" id="step2">
+          <div class="step-circle">2</div>
+          <div class="step-content">
+            <div class="step-label">Information</div>
+            <div class="step-description">Verify details & address</div>
+          </div>
+        </div>
+        
+        <div class="step" id="step3">
+          <div class="step-circle">3</div>
+          <div class="step-content">
+            <div class="step-label">Payment</div>
+            <div class="step-description">Secure transaction</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 1: Plan Details -->
+    <div id="phase1" class="phase-card">
+      <h2 class="phase-title">
+        <div class="phase-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        Selected Plan Details
+      </h2>
+      
+      <div class="plan-details" id="planDetails">
+        <!-- Plan details will be populated by JavaScript -->
+      </div>
+
+      <!-- Coupon Code Section -->
+      <div class="form-group" style="margin-top: 1.5rem;">
+        <label class="form-label" for="couponCode">
+          <i class="fas fa-ticket-alt"></i>
+          Coupon Code (if any)
+        </label>
+        <input
+          type="text"
+          id="couponCode"
+          class="form-input"
+          placeholder="Enter coupon code"
+          style="max-width: 300px; display: inline-block;"
+        />
+        <button id="applyCouponBtn" class="btn btn-primary" style="margin-left: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem;">
+          Apply
+        </button>
+        <p id="couponMessage" style="margin-top: 0.5rem; color: var(--error); font-size: 0.9rem; display: none;"></p>
+      </div>
+
+      <div class="security-features">
+        <div class="security-item">
+          <div class="security-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="security-title">Bank-Level Security</div>
+          <div class="security-description">Your payment is protected with 256-bit SSL encryption</div>
+        </div>
+        <div class="security-item">
+          <div class="security-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="security-title">Instant Activation</div>
+          <div class="security-description">Your plan activates immediately after payment</div>
+        </div>
+        <div class="security-item">
+          <div class="security-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <div class="security-title">24/7 Support</div>
+          <div class="security-description">Get help anytime with our dedicated support team</div>
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button id="nextBtn1" class="btn btn-primary">
+          <i class="fas fa-arrow-right"></i>
+          Continue to Information
+        </button>
+      </div>
+    </div>
+
+    <!-- Phase 2: User Details & Address -->
+    <div id="phase2" class="phase-card" style="display: none;">
+      <h2 class="phase-title">
+        <div class="phase-icon">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        Verify Your Information
+      </h2>
+      
+      <div class="user-details" id="userDetails">
+        <!-- User details will be populated by JavaScript -->
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="line1">
+            <i class="fas fa-map-marker-alt"></i>
+            Address Line 1
+          </label>
+          <input type="text" id="line1" class="form-input" placeholder="Enter your street address" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="city">
+            <i class="fas fa-city"></i>
+            City
+          </label>
+          <input type="text" id="city" class="form-input" placeholder="Enter your city" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="state">
+            <i class="fas fa-map"></i>
+            State
+          </label>
+          <input type="text" id="state" class="form-input" placeholder="Enter your state" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="postalCode">
+            <i class="fas fa-mail-bulk"></i>
+            Postal Code
+          </label>
+          <input type="text" id="postalCode" class="form-input" placeholder="Enter postal code" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="country">
+            <i class="fas fa-globe"></i>
+            Country
+          </label>
+          <input type="text" id="country" class="form-input" placeholder="Enter your country" value="India" required />
+        </div>
+      </div>
+
+      <div class="btn-container">
+        <button id="nextBtn2" class="btn btn-success">
+          <i class="fas fa-credit-card"></i>
+          Proceed to Secure Payment
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+
+ <script>
+  console.log("🚀 Payment Portal Loaded");
+
+  // Progress tracking
+  let currentPhase = 1;
+
+  // Coupon state
+  let couponApplied = false;
+  let discountAmount = 0;
+  let discountedPrice = null;
+  let appliedCouponCode = '';
+
+  // Update progress indicator
+  function updateProgress(phase) {
+    currentPhase = phase;
+    
+    // Reset all steps
+    document.querySelectorAll('.step').forEach(step => {
+      step.classList.remove('active', 'completed');
+    });
+    
+    // Update steps based on current phase
+    for (let i = 1; i <= 3; i++) {
+      const step = document.getElementById(`step${i}`);
+      if (i < phase) {
+        step.classList.add('completed');
+      } else if (i === phase) {
+        step.classList.add('active');
+      }
+    }
+    
+    // Update progress line
+    const progressFill = document.getElementById('progressFill');
+    const progressPercentage = ((phase - 1) / 2) * 100;
+    progressFill.style.width = `${progressPercentage}%`;
+  }
+
+  // 1) Read query params
+  const params = new URLSearchParams(window.location.search);
+  const plan   = params.get('plan');
+  const userId = params.get('userId');
+  const price  = params.get('price'); // e.g. "1000" meaning ₹1,000
+
+  console.log("Query Params:", { plan, userId, price });
+
+  // decide access duration based on plan
+  let accessDuration;
+  if (plan === 'basic') {
+    accessDuration = '1 Month';
+  } else if (plan === 'advanced') {
+    accessDuration = 'Yearly';
+  }
+
+  // 2) Cache references for coupon elements (already present in HTML)
+  const couponInput     = document.getElementById('couponCode');
+  const applyCouponBtn  = document.getElementById('applyCouponBtn');
+  const couponMessageP  = document.getElementById('couponMessage');
+
+  // 3) Handle "Apply Coupon" click
+  applyCouponBtn.addEventListener('click', async () => {
+    const code = couponInput.value.trim().toUpperCase();
+    if (!code) {
+      couponMessageP.style.display = 'block';
+      couponMessageP.style.color = 'var(--error)';
+      couponMessageP.textContent = 'Please enter a coupon code.';
+      return;
+    }
+
+    applyCouponBtn.disabled = true;
+    applyCouponBtn.textContent = 'Validating…';
+    couponMessageP.style.display = 'none';
+
+    try {
+      const payload = {
+        couponCode: code,
+        plan: plan,
+        amount: Number(price) // back-end expects original amount (in rupees or paise as configured)
+      };
+      const res = await fetch('/api/coupons/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (!data.valid) {
+        couponMessageP.style.display = 'block';
+        couponMessageP.style.color = 'var(--error)';
+        couponMessageP.textContent = data.message || 'Invalid coupon.';
+        couponApplied = false;
+        discountedPrice = null;
+      } else {
+        // Coupon is valid
+        couponApplied      = true;
+        discountAmount     = data.discount;
+        discountedPrice    = data.discountedAmount;
+        appliedCouponCode  = code;
+
+        // Disable further changes
+        couponInput.disabled = true;
+        applyCouponBtn.disabled = true;
+
+        couponMessageP.style.display = 'block';
+        couponMessageP.style.color = 'var(--success)';
+        couponMessageP.textContent = `Coupon applied! You saved ₹${discountAmount}. New price: ₹${discountedPrice}.`;
+
+        // Update the displayed “Total Amount” in the plan summary
+        const priceElem = document.querySelector('.plan-item .price-highlight');
+        if (priceElem) {
+          priceElem.textContent = `₹${discountedPrice}`;
+        }
+      }
+    } catch (err) {
+      console.error('Error validating coupon:', err);
+      couponMessageP.style.display = 'block';
+      couponMessageP.style.color = 'var(--error)';
+      couponMessageP.textContent = 'Server error validating coupon.';
+      couponApplied = false;
+      discountedPrice = null;
+    } finally {
+      applyCouponBtn.disabled = couponApplied; // keep disabled if applied
+      applyCouponBtn.textContent = 'Apply';
+    }
+  });
+
+  // 4) Show plan details in Phase 1 (including original price)
+  document.getElementById('planDetails').innerHTML = `
+    <div class="plan-header">
+      <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--text-primary); margin: 0;">
+        ${plan} Plan
+      </h3>
+      <div class="plan-badge">Selected</div>
+    </div>
+    <div class="plan-item">
+      <span class="plan-label">
+        <i class="fas fa-graduation-cap"></i>
+        Plan Name
+      </span>
+      <span class="plan-value">${plan}</span>
+    </div>
+    <div class="plan-item">
+      <span class="plan-label">
+        <i class="fas fa-tag"></i>
+        Total Amount
+      </span>
+      <span class="plan-value price-highlight">₹${price}</span>
+    </div>
+    <div class="plan-item">
+      <span class="plan-label">
+        <i class="fas fa-calendar-alt"></i>
+        Billing Type
+      </span>
+      <span class="plan-value">One-time Payment</span>
+    </div>
+    <div class="plan-item">
+      <span class="plan-label">
+        <i class="fas fa-infinity"></i>
+        Access Duration
+      </span>
+      <span class="plan-value">${accessDuration}</span>
+    </div>
+    <div class="plan-item">
+      <span class="plan-label">
+        <i class="fas fa-bolt"></i>
+        Activation
+      </span>
+      <span class="plan-value">Instant</span>
+    </div>
+  `;
+
+  // 5) "Next" button moves to Phase 2
+  document.getElementById('nextBtn1').addEventListener('click', () => {
+    console.log("Next (Phase 1) clicked");
+    
+    // Add loading state
+    const btn = document.getElementById('nextBtn1');
+    btn.classList.add('loading');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+    
+    setTimeout(() => {
+      document.getElementById('phase1').style.display  = 'none';
+      document.getElementById('phase2').style.display  = 'block';
+      updateProgress(2);
+      fetchUserDetails();
+      
+      // Reset button
+      btn.classList.remove('loading');
+      btn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue to Information';
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 1200);
+  });
+
+  // 6) Fetch user info from backend (/api/users/:id)
+  async function fetchUserDetails() {
+    try {
+      console.log("Fetching user details for:", userId);
+      const res = await fetch(`/api/users/${userId}`);
+      if (!res.ok) {
+        console.error("Error fetching user:", res.status, res.statusText);
+        return;
+      }
+      const user = await res.json();
+      console.log("User data:", user);
+      
+      // Get first letter of name for avatar
+      const firstLetter = user.fullName ? user.fullName.charAt(0).toUpperCase() : 'U';
+      
+      document.getElementById('userDetails').innerHTML = `
+        <div class="user-header">
+          <div class="user-avatar">${firstLetter}</div>
+          <div>
+            <h3 style="font-family: 'Poppins', sans-serif; font-weight: 600; color: var(--text-primary); margin: 0;">${user.fullName}</h3>
+            <p style="color: var(--text-secondary); margin: 0; font-size: 0.9rem;">Verified Account</p>
+          </div>
+        </div>
+        <div class="user-item">
+          <span class="user-label">
+            <i class="fas fa-user"></i>
+            Full Name
+          </span>
+          <span class="user-value">${user.fullName}</span>
+        </div>
+        <div class="user-item">
+          <span class="user-label">
+            <i class="fas fa-birthday-cake"></i>
+            Date of Birth
+          </span>
+          <span class="user-value">${user.dateOfBirth}</span>
+        </div>
+        <div class="user-item">
+          <span class="user-label">
+            <i class="fas fa-phone"></i>
+            Phone Number
+          </span>
+          <span class="user-value">${user.phone}</span>
+        </div>
+      `;
+    } catch (err) {
+      console.error("Network or JSON error fetching user:", err);
+    }
+  }
+
+  // 7) Razorpay integration on "Proceed to Pay"
+  document.getElementById('nextBtn2').addEventListener('click', async () => {
+    console.log("Proceed to Pay clicked");
+
+    // Add loading state
+    const btn = document.getElementById('nextBtn2');
+    btn.classList.add('loading');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+    // Gather Address
+    const address = {
+      line1: document.getElementById('line1').value,
+      city: document.getElementById('city').value,
+      state: document.getElementById('state').value,
+      postalCode: document.getElementById('postalCode').value,
+      country: document.getElementById('country').value
+    };
+
+    // Validate address fields
+    if (!address.line1 || !address.city || !address.state || !address.postalCode || !address.country) {
+      alert('Please fill all address fields.');
+      btn.classList.remove('loading');
+      btn.innerHTML = '<i class="fas fa-credit-card"></i> Proceed to Secure Payment';
+      return;
+    }
+
+    // Update progress to payment phase
+    updateProgress(3);
+
+    // Determine final amount (rupees) based on coupon
+    let finalAmount = couponApplied && discountedPrice !== null
+      ? discountedPrice
+      : Number(price);
+    // If your /create-order endpoint expects paise, multiply by 100 here:
+    // finalAmount = finalAmount * 100;
+
+    // 3a) Create Razorpay order on server
+    try {
+      console.log("Creating Razorpay order for amount:", finalAmount);
+      const orderRes = await fetch('/api/payment/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: finalAmount })
+      });
+
+      if (!orderRes.ok) {
+        const text = await orderRes.text();
+        console.error("Error from /api/payment/create-order:", orderRes.status, text);
+        alert('Failed to create order. Check server logs.');
+        btn.classList.remove('loading');
+        btn.innerHTML = '<i class="fas fa-credit-card"></i> Proceed to Secure Payment';
+        return;
+      }
+
+      const order = await orderRes.json();
+      console.log("Order response:", order);
+
+      // Reset button before opening Razorpay
+      btn.classList.remove('loading');
+      btn.innerHTML = '<i class="fas fa-credit-card"></i> Proceed to Secure Payment';
+
+      // 3b) Open Razorpay Checkout
+      const options = {
+        key: 'rzp_live_VOId3dd9G2uxM5', // ← Replace with your actual key
+        amount: order.amount,
+        currency: 'INR',
+        name: 'Eduracks',
+        description: `Payment for ${plan} plan`,
+        order_id: order.id,
+        handler: async function (response) {
+          console.log("Razorpay handler response:", response);
+
+          // 3c) Verify payment on server
+          try {
+            const verifyPayload = {
+              razorpay_order_id:    response.razorpay_order_id,
+              razorpay_payment_id:  response.razorpay_payment_id,
+              razorpay_signature:   response.razorpay_signature,
+              userId:               userId,
+              plan:                 plan,
+              amount:               finalAmount,
+              originalAmount:       Number(price),
+              couponCode:           appliedCouponCode,
+              discountApplied:      discountAmount,
+              address:              address
+            };
+
+            const verifyRes = await fetch('/api/payment/verify-payment', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(verifyPayload)
+            });
+
+            if (!verifyRes.ok) {
+              const text = await verifyRes.text();
+              console.error("Error from /api/payment/verify-payment:", verifyRes.status, text);
+              alert('Payment verification failed. Check server logs.');
+              return;
+            }
+
+            const data = await verifyRes.json();
+            console.log("Verify response:", data);
+
+            if (data.success) {
+              alert('Payment successful! Your plan is activated.');
+              window.location.href = 'premium.html';
+            } else {
+              alert('Payment failed: ' + data.message);
+            }
+          } catch (err) {
+            console.error("Network or JSON error verifying payment:", err);
+            alert('Error verifying payment. Check console.');
+          }
+        },
+        prefill: {
+          name:  '', // optionally prefill name if you have it
+          email: '',
+          contact: ''
+        },
+        theme: {
+          color: '#6366f1'
+        }
+      };
+
+      console.log("Opening Razorpay Checkout");
+      const rzp = new Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Network or JSON error creating order:", err);
+      alert('Error creating order. Check console.');
+      btn.classList.remove('loading');
+      btn.innerHTML = '<i class="fas fa-credit-card"></i> Proceed to Secure Payment';
+    }
+  });
+
+  // 8) Initialize progress on page load
+  updateProgress(1);
+</script>
+
+
+</body>
+</html>

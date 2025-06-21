@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDURACK - Login & Sign Up</title>
+    <link rel="icon" href="https://i.postimg.cc/k4VZLxVN/cropped-circle-image.png" type="image/png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+  /* CSS Variables - Edurack Color Palette */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --text-inverse: #ffffff;
+            
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-dark: #0f172a;
+            --bg-card: #ffffff;
+            
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: clamp(14px, 2.5vw, 16px);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 50%, var(--bg-tertiary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(1rem, 3vw, 2rem);
+            position: relative;
+            overflow-x: hidden;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        /* Enhanced Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Back to Home Link */
+        .back-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-normal);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .back-home:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateX(-3px);
+            box-shadow: var(--shadow-md);
+            color: var(--primary);
+        }
+
+        /* Main Container */
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: clamp(20px, 5vw, 30px);
+            box-shadow: 0 clamp(20px, 5vw, 30px) clamp(60px, 15vw, 80px) rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: clamp(350px, 90vw, 450px);
+            padding: clamp(2rem, 6vw, 3rem);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: clamp(20px, 5vw, 30px) clamp(20px, 5vw, 30px) 0 0;
+        }
+
+        /* Header */
+        .login-header {
+            text-align: center;
+            margin-bottom: clamp(2rem, 5vw, 2.5rem);
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.8rem, 6vw, 2.2rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            margin-bottom: clamp(0.5rem, 2vw, 1rem);
+            letter-spacing: -0.02em;
+            position: relative;
+            transition: var(--transition-normal);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: var(--transition-normal);
+        }
+
+        .logo:hover img {
+            transform: rotate(360deg);
+        }
+
+        /* Fallback for browsers that don't support background-clip */
+        @supports not (-webkit-background-clip: text) {
+            .logo {
+                background: none;
+                color: var(--primary);
+            }
+        }
+
+        .login-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            line-height: 1.5;
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: clamp(1.5rem, 4vw, 2rem);
+            gap: clamp(0.5rem, 2vw, 1rem);
+        }
+
+        .progress-step {
+            width: clamp(8px, 2vw, 10px);
+            height: clamp(8px, 2vw, 10px);
+            border-radius: 50%;
+            background: #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .progress-step.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .progress-step.completed {
+            background: var(--success);
+            transform: scale(1.2);
+        }
+
+        .progress-step.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 6px;
+            font-weight: bold;
+        }
+
+        .progress-line {
+            flex: 1;
+            height: 2px;
+            background: #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .progress-line.completed {
+            background: var(--success);
+        }
+
+        /* Tab Switcher */
+        .tab-switcher {
+            display: flex;
+            background: var(--bg-tertiary);
+            border-radius: clamp(12px, 3vw, 15px);
+            padding: clamp(4px, 1vw, 6px);
+            margin-bottom: clamp(1.5rem, 4vw, 2rem);
+            position: relative;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: clamp(0.75rem, 2vw, 1rem);
+            background: transparent;
+            border: none;
+            border-radius: clamp(8px, 2vw, 10px);
+            font-weight: 600;
+            font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            z-index: 2;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Form Sections */
+        .form-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Multi-Step Form */
+        .signup-step {
+            display: none;
+            animation: slideInStep 0.4s ease;
+        }
+
+        .signup-step.active {
+            display: block;
+        }
+
+        @keyframes slideInStep {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Back Button for Steps */
+        .step-back-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+            cursor: pointer;
+            margin-bottom: clamp(1rem, 3vw, 1.5rem);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .step-back-btn:hover {
+            color: var(--primary-dark);
+            transform: translateX(-3px);
+        }
+
+        /* Form Styles */
+        .auth-form {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: clamp(1rem, 3vw, 1.5rem);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: clamp(0.875rem, 2.5vw, 1rem);
+            border: clamp(1px, 0.3vw, 2px) solid var(--border);
+            border-radius: clamp(12px, 3vw, 15px);
+            font-size: clamp(0.875rem, 2.2vw, 1rem);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: white;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-error {
+            color: var(--error);
+            font-size: clamp(0.8rem, 2vw, 0.85rem);
+            margin-top: clamp(0.25rem, 1vw, 0.5rem);
+            display: none;
+        }
+
+        .form-group.error .form-input,
+        .form-group.error .form-select {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-group.error .form-error {
+            display: block;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(0.5rem, 1.5vw, 0.75rem);
+            width: 100%;
+            padding: clamp(1rem, 3vw, 1.25rem);
+            border: none;
+            border-radius: clamp(12px, 3vw, 15px);
+            font-weight: 700;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: clamp(1rem, 3vw, 1.5rem);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Social Login Buttons */
+        .social-login {
+            margin-bottom: clamp(1.5rem, 4vw, 2rem);
+        }
+
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(0.5rem, 1.5vw, 0.75rem);
+            width: 100%;
+            padding: clamp(0.875rem, 2.5vw, 1rem);
+            border: clamp(1px, 0.3vw, 2px) solid var(--border);
+            border-radius: clamp(12px, 3vw, 15px);
+            background: white;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: clamp(0.875rem, 2.2vw, 0.95rem);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            margin-bottom: clamp(0.75rem, 2vw, 1rem);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .google-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .google-btn:hover::before {
+            left: 100%;
+        }
+
+        .google-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: clamp(1.5rem, 4vw, 2rem) 0;
+            color: var(--text-muted);
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            padding: 0 clamp(0.75rem, 2vw, 1rem);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Form Toggle */
+        .form-toggle {
+            text-align: center;
+            margin-top: clamp(1rem, 3vw, 1.5rem);
+            color: var(--text-secondary);
+        }
+
+        .form-toggle button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: underline;
+            transition: var(--transition-normal);
+        }
+
+        .form-toggle button:hover {
+            color: var(--primary-dark);
+        }
+
+        /* Loading State */
+        .loading {
+            position: relative;
+            pointer-events: none;
+            color: transparent !important;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: clamp(18px, 4vw, 20px);
+            height: clamp(18px, 4vw, 20px);
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Success Message */
+        .success-message {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--success);
+            color: var(--text-inverse);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 3000;
+            transform: translateX(150%);
+            transition: var(--transition-normal);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            max-width: 90%;
+        }
+
+        .success-message.show {
+            transform: translateX(0);
+        }
+
+        /* Desktop Enhancements */
+        @media (min-width: 1024px) {
+            html {
+                font-size: 16px;
+            }
+
+            body {
+                background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 30%, var(--bg-tertiary) 70%, var(--bg-secondary) 100%);
+                padding: 2rem;
+            }
+
+            body::before {
+                background: 
+                    radial-gradient(circle at 300px 200px, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 1600px 300px, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 800px 800px, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 1400px 700px, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+                animation: float 25s ease-in-out infinite;
+            }
+
+            .login-container {
+                max-width: 520px;
+                padding: 3.5rem;
+                border-radius: 24px;
+                box-shadow: 
+                    0 32px 64px rgba(99, 102, 241, 0.15),
+                    0 16px 32px rgba(99, 102, 241, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            }
+
+            .login-container:hover {
+                transform: translateY(-2px);
+                box-shadow: 
+                    0 40px 80px rgba(99, 102, 241, 0.2),
+                    0 20px 40px rgba(99, 102, 241, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            }
+
+            .logo {
+                font-size: 2.8rem;
+                font-weight: 900;
+                text-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+            }
+
+            .login-title {
+                font-size: 2.2rem;
+                line-height: 1.2;
+            }
+
+            .login-subtitle {
+                font-size: 1.1rem;
+                line-height: 1.6;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .progress-step {
+                width: 12px;
+                height: 12px;
+            }
+
+            .progress-step.completed::after {
+                font-size: 8px;
+            }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .login-container {
+                padding: 1.5rem;
+            }
+
+            .back-home {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.375rem 0.75rem;
+                font-size: 0.875rem;
+            }
+
+            .success-message {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                transform: translateY(-150%);
+                font-size: 0.875rem;
+                padding: 0.75rem 1rem;
+            }
+
+            .success-message.show {
+                transform: translateY(0);
+            }
+        }
+
+        /* Focus styles for accessibility */
+        a:focus, button:focus, input:focus, select:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+            </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+
+    <!-- Back to Home Link -->
+    <a href="index.html" class="back-home">
+        <i class="fas fa-arrow-left"></i>
+        Back to Home
+    </a>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-header">
+            <a href="index.html" class="logo">
+                <img src="https://i.postimg.cc/nV4TrRtj/cropped-circle-image-removebg-preview.png" alt="EDURACK">
+                EDURACK
+            </a>
+            <h1 class="login-title" id="authTitle">Welcome Back!</h1>
+            <p class="login-subtitle" id="authSubtitle">Sign in to continue your learning journey</p>
+        </div>
+
+        <!-- Tab Switcher -->
+        <div class="tab-switcher">
+            <button class="tab-button active" onclick="switchTab('login')">Login</button>
+            <button class="tab-button" onclick="switchTab('signup')">Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="form-section active">
+            <form class="auth-form" onsubmit="handleEmailLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input name="email" type="email" class="form-input" placeholder="Enter your email" required>
+                    <div class="form-error">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input name="password" type="password" class="form-input" placeholder="Enter your password" required>
+                    <div class="form-error">Password must be at least 6 characters</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </button>
+
+                <div class="divider"><span>or</span></div>
+
+                <div class="social-login">
+                    <button type="button" id="googleLoginBtn" class="google-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+                </div>
+
+                <div class="form-toggle">
+                    Don't have an account?
+                    <button type="button" onclick="switchTab('signup')">Create Account</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signupForm" class="form-section">
+            <!-- Progress Indicator -->
+            <div class="progress-indicator">
+                <div class="progress-step active" id="step1Indicator"></div>
+                <div class="progress-line" id="progressLine"></div>
+                <div class="progress-step" id="step2Indicator"></div>
+            </div>
+
+            <!-- Step 1: Basic Information -->
+            <div id="signupStep1" class="signup-step active">
+                <form class="auth-form" onsubmit="handleStep1Next(event)">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input name="name" type="text" class="form-input" placeholder="Enter your full name" required>
+                        <div class="form-error">Please enter your full name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input name="email" type="email" class="form-input" placeholder="Enter your email" required>
+                        <div class="form-error">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input name="phone" type="text" class="form-input" placeholder="Enter your phone number" required>
+                        <div class="form-error">Please enter a valid phone number</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input name="password" type="password" class="form-input" placeholder="Create a password" required>
+                        <div class="form-error">Password must be at least 6 characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input name="confirm" type="password" class="form-input" placeholder="Confirm your password" required>
+                        <div class="form-error">Passwords do not match</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-arrow-right"></i>
+                        Next
+                    </button>
+
+                    <div class="divider"><span>or</span></div>
+
+                    <div class="social-login">
+                        <button type="button" id="googleSignupBtn" class="google-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Continue with Google
+                        </button>
+                    </div>
+                    <div class="form-toggle">
+                        Already have an account?
+                        <button type="button" onclick="switchTab('login')">Sign In</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Additional Information -->
+            <div id="signupStep2" class="signup-step">
+                <button class="step-back-btn" onclick="goBackToStep1()">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </button>
+
+                <form class="auth-form" onsubmit="handleEmailSignup(event)">
+                    <div class="form-group">
+                        <label class="form-label">Class</label>
+                        <select name="studentClass" class="form-select" required>
+                            <option value="">Select your class</option>
+                            <option value="11th">11th Grade</option>
+                            <option value="12th">12th Grade</option>
+                            <option value="Dropper">Dropper</option>
+                        </select>
+                        <div class="form-error">Please select your class</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Target Exam</label>
+                        <select name="exam" class="form-select" required>
+                            <option value="">Select your exam</option>
+                            <option value="JEE">JEE</option>
+                            <option value="NEET">NEET</option>
+                        </select>
+                        <div class="form-error">Please select your exam</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">State</label>
+                        <select name="state" class="form-select" required>
+                            <option value="">Select your state</option>
+                            <option value="Andhra Pradesh">Andhra Pradesh</option>
+                            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                            <option value="Assam">Assam</option>
+                            <option value="Bihar">Bihar</option>
+                            <option value="Chhattisgarh">Chhattisgarh</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Gujarat">Gujarat</option>
+                            <option value="Haryana">Haryana</option>
+                            <option value="Himachal Pradesh">Himachal Pradesh</option>
+                            <option value="Jharkhand">Jharkhand</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Madhya Pradesh">Madhya Pradesh</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Manipur">Manipur</option>
+                            <option value="Meghalaya">Meghalaya</option>
+                            <option value="Mizoram">Mizoram</option>
+                            <option value="Nagaland">Nagaland</option>
+                            <option value="Odisha">Odisha</option>
+                            <option value="Punjab">Punjab</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Sikkim">Sikkim</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="Telangana">Telangana</option>
+                            <option value="Tripura">Tripura</option>
+                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            <option value="Uttarakhand">Uttarakhand</option>
+                            <option value="West Bengal">West Bengal</option>
+                            <option value="Delhi">Delhi</option>
+                        </select>
+                        <div class="form-error">Please select your state</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="registerBtn">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"></i>
+        <span id="successText">Success!</span>
+    </div>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<Script>
+// ──────────────────────────────────────────────────────────────────────────────
+// FIXED Google Sign-In Implementation for EDURACK Login Page
+// ──────────────────────────────────────────────────────────────────────────────
+
+// Global state
+let currentAuthType = 'login';
+let currentStep = 1;
+let signupData = {};
+let googleUserData = {};
+let isGoogleSignup = false;
+let googleInitialized = false;
+let initializationAttempts = 0;
+
+// Configuration - FIXED redirect URIs
+const API_BASE = 'http://localhost:5000/api';
+const GOOGLE_CLIENT_ID = '255672187375-36d3fhajf7it5asc6s8g6o7aeel97cp3.apps.googleusercontent.com';
+const MAX_INIT_ATTEMPTS = 3;
+
+// Get current origin for redirect URIs
+const getCurrentOrigin = () => {
+    // Handle different environments
+    if (window.location.protocol === 'file:') {
+        return 'http://localhost:5000'; // Fallback for file:// protocol
+    }
+    return window.location.origin;
+};
+
+// DOM Elements
+const successMessage = document.getElementById('successMessage');
+
+// ──────────────────────────────────────────────────────────────────────────────
+// FIXED GOOGLE SIGN-IN IMPLEMENTATION
+// ──────────────────────────────────────────────────────────────────────────────
+
+// Initialize Google Sign-In with corrected settings
+function initializeGoogleSignIn() {
+    if (typeof google === 'undefined' || !google.accounts?.id) {
+        if (initializationAttempts < MAX_INIT_ATTEMPTS) {
+            initializationAttempts++;
+            console.log(`Google SDK not ready, attempt ${initializationAttempts}/${MAX_INIT_ATTEMPTS}`);
+            return setTimeout(initializeGoogleSignIn, 1000 * initializationAttempts);
+        } else {
+            console.error('Google SDK failed to load after maximum attempts');
+            return showGoogleSignInError();
+        }
+    }
+    if (googleInitialized) return;
+
+    try {
+        google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleSignIn,
+            ux_mode: 'popup',
+            context: 'signin',
+            cancel_on_tap_outside: true,
+            auto_select: false,
+            itp_support: true,
+            use_fedcm_for_prompt: false   // Disable FedCM to avoid warnings
+        });
+
+        googleInitialized = true;
+        console.log('✅ Google Sign-In initialized successfully (FedCM disabled)');
+
+        // Render button if container exists
+        const btnContainer = document.getElementById('g_id_signin');
+        if (btnContainer) {
+            google.accounts.id.renderButton(btnContainer, {
+                theme: 'outline',
+                size: 'large',
+                text: 'continue_with',
+                shape: 'rectangular',
+                width: '100%'
+            });
+        }
+    } catch (error) {
+        console.error('Google Sign-In initialization error:', error);
+        showGoogleSignInError();
+    }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Trigger Google Sign-In with improved error handling
+// ────────────────────────────────────────────────────────────────────────────
+function triggerGoogleSignIn() {
+    if (!googleInitialized) {
+        console.log('Google not initialized, attempting initialization...');
+        initializeGoogleSignIn();
+        return setTimeout(triggerGoogleSignIn, 2000);
+    }
+
+    try {
+        console.log('Triggering Google Sign-In popup...');
+        google.accounts.id.prompt();
+    } catch (err) {
+        console.warn('Popup failed, trying redirect fallback:', err);
+        fallbackGoogleSignIn();
+    }
+}
+
+// Improved fallback with proper redirect URI
+function fallbackGoogleSignIn() {
+    try {
+        // FIXED: Use proper redirect URI based on environment
+        const currentOrigin = getCurrentOrigin();
+        const redirectUri = `${currentOrigin}/auth/google/callback`;
+        
+        console.log('Using redirect URI:', redirectUri);
+        
+        const authUrl = `https://accounts.google.com/oauth/authorize?` +
+            `client_id=${GOOGLE_CLIENT_ID}&` +
+            `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+            `response_type=code&` +
+            `scope=openid email profile&` +
+            `state=${Math.random().toString(36).substring(2)}`;
+        
+        console.log('Redirecting to:', authUrl);
+        window.location.href = authUrl;
+        
+    } catch (error) {
+        console.error('Fallback Google Sign-In error:', error);
+        showGoogleSignInError();
+    }
+}
+
+// Show Google Sign-In error with better user guidance
+function showGoogleSignInError() {
+    const errorMessage = 'Google Sign-In configuration issue. Please check:\n' +
+                        '1. Internet connection\n' +
+                        '2. Browser allows popups\n' +
+                        '3. Try refreshing the page\n' +
+                        '4. Use email login as alternative';
+    alert(errorMessage);
+    console.error('🚨 Google Sign-In Error - Check console for details');
+}
+
+// FIXED: Handle Google Sign-In Response with better error handling
+async function handleGoogleSignIn(response) {
+    try {
+        console.log('✅ Google Sign-In response received');
+        
+        if (!response || !response.credential) {
+            throw new Error('No credential received from Google');
+        }
+        
+        // Show loading state on all Google buttons
+        document.querySelectorAll('.google-btn').forEach(btn => {
+            btn.classList.add('loading');
+            btn.disabled = true;
+        });
+        
+        const res = await fetch(`${API_BASE}/auth/google`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ credential: response.credential }),
+            credentials: 'include'
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({ message: `HTTP ${res.status}` }));
+            throw new Error(errorData.message || `Server error: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        // Store authentication data
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+        }
+        if (data.user && data.user.email) {
+            localStorage.setItem('userEmail', data.user.email);
+        }
+
+        if (data.needsProfileCompletion) {
+            // New Google user needs to complete profile
+            isGoogleSignup = true;
+            googleUserData = data.user;
+            showGoogleProfileCompletion();
+        } else {
+            // Existing user, redirect to dashboard
+            showSuccess('Welcome back! Redirecting to dashboard…');
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 2000);
+        }
+
+    } catch (error) {
+        console.error('Google sign-in error:', error);
+        alert(`Google sign-in failed: ${error.message}`);
+    } finally {
+        // Remove loading state from all Google buttons
+        document.querySelectorAll('.google-btn').forEach(btn => {
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        });
+    }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// INITIALIZATION AND EVENT BINDING
+// ──────────────────────────────────────────────────────────────────────────────
+
+// Simplified initialization with better debugging
+function initGoogleSignInWithRetry() {
+    console.log('🚀 Starting Google Sign-In initialization...');
+    
+    // Check if we're in a supported environment
+    if (window.location.protocol === 'file:') {
+        console.warn('⚠️ File protocol detected - Google Sign-In may not work properly');
+    }
+    
+    // Reset attempts counter
+    initializationAttempts = 0;
+    
+    // Wait for DOM and Google SDK
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initializeGoogleSignIn, 500);
+        });
+    } else {
+        setTimeout(initializeGoogleSignIn, 500);
+    }
+}
+
+// FIXED: Bind Google Sign-In buttons with better event handling
+function bindGoogleButtons() {
+    console.log('🔗 Binding Google Sign-In buttons...');
+    
+    const googleLoginBtn = document.getElementById('googleLoginBtn');
+    const googleSignupBtn = document.getElementById('googleSignupBtn');
+    
+    if (googleLoginBtn) {
+        // Remove any existing listeners
+        googleLoginBtn.replaceWith(googleLoginBtn.cloneNode(true));
+        const newGoogleLoginBtn = document.getElementById('googleLoginBtn');
+        
+        newGoogleLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🔑 Google login button clicked');
+            
+            if (newGoogleLoginBtn.disabled) return;
+            
+            // Add loading state
+            newGoogleLoginBtn.classList.add('loading');
+            newGoogleLoginBtn.disabled = true;
+            
+            triggerGoogleSignIn();
+            
+            // Remove loading state after timeout as fallback
+            setTimeout(() => {
+                newGoogleLoginBtn.classList.remove('loading');
+                newGoogleLoginBtn.disabled = false;
+            }, 10000);
+        });
+        
+        console.log('✅ Google login button bound');
+    } else {
+        console.warn('⚠️ Google login button not found');
+    }
+    
+    if (googleSignupBtn) {
+        // Remove any existing listeners
+        googleSignupBtn.replaceWith(googleSignupBtn.cloneNode(true));
+        const newGoogleSignupBtn = document.getElementById('googleSignupBtn');
+        
+        newGoogleSignupBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('📝 Google signup button clicked');
+            
+            if (newGoogleSignupBtn.disabled) return;
+            
+            // Add loading state
+            newGoogleSignupBtn.classList.add('loading');
+            newGoogleSignupBtn.disabled = true;
+            
+            triggerGoogleSignIn();
+            
+            // Remove loading state after timeout as fallback
+            setTimeout(() => {
+                newGoogleSignupBtn.classList.remove('loading');
+                newGoogleSignupBtn.disabled = false;
+            }, 10000);
+        });
+        
+        console.log('✅ Google signup button bound');
+    } else {
+        console.warn('⚠️ Google signup button not found');
+    }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// EXISTING FORM HANDLING AND UI LOGIC (keeping your existing functions)
+// ──────────────────────────────────────────────────────────────────────────────
+
+// Show Google Profile Completion Form
+function showGoogleProfileCompletion() {
+    // Switch to signup tab and show step 2 directly
+    currentAuthType = 'signup';
+    currentStep = 2;
+    isGoogleSignup = true;
+    
+    // Update UI
+    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+    const signupTab = document.querySelector('[onclick="switchTab(\'signup\')"]');
+    if (signupTab) signupTab.classList.add('active');
+    
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) signupForm.classList.add('active');
+    
+    // Show only step 2
+    const step1 = document.getElementById('signupStep1');
+    const step2 = document.getElementById('signupStep2');
+    if (step1) step1.classList.remove('active');
+    if (step2) step2.classList.add('active');
+    
+    // Update progress and title
+    updateProgressIndicator();
+    const title = document.querySelector('.login-title');
+    const subtitle = document.querySelector('.login-subtitle');
+    
+    if (title) title.textContent = 'Complete Your Profile';
+    if (subtitle) {
+        subtitle.textContent = `Welcome ${googleUserData.fullName || googleUserData.name || 'User'}! Please complete your profile to continue.`;
+    }
+    
+    // Add phone field to step 2 for Google users
+    addPhoneFieldForGoogleUsers();
+    
+    // Update button text
+    const submitBtn = document.querySelector('#signupStep2 .btn-primary');
+    if (submitBtn) {
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Complete Profile';
+    }
+}
+
+// Add phone field for Google users
+function addPhoneFieldForGoogleUsers() {
+    const step2Form = document.getElementById('signupStep2');
+    if (!step2Form || step2Form.querySelector('input[name="phone"]')) return;
+    
+    const phoneGroup = document.createElement('div');
+    phoneGroup.className = 'form-group';
+    phoneGroup.innerHTML = `
+        <label for="phone" class="form-label">Phone Number (Optional)</label>
+        <input type="tel" id="phone" name="phone" class="form-input" placeholder="Enter your phone number">
+    `;
+    
+    const form = step2Form.querySelector('form');
+    const firstFormGroup = form.querySelector('.form-group');
+    if (firstFormGroup) {
+        form.insertBefore(phoneGroup, firstFormGroup);
+    }
+}
+
+// Utility: Validate email format
+function isValidEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+// Show success message
+function showSuccess(message) {
+    const successText = document.getElementById('successText');
+    if (successText) {
+        successText.textContent = message;
+    }
+    if (successMessage) {
+        successMessage.classList.add('show');
+        setTimeout(() => {
+            successMessage.classList.remove('show');
+        }, 3000);
+    }
+}
+
+// Form validation helper
+function validateForm(form) {
+    const inputs = form.querySelectorAll('.form-input, .form-select');
+    let isValid = true;
+
+    inputs.forEach(input => {
+        const formGroup = input.closest('.form-group');
+        if (!formGroup) return;
+        
+        // Skip validation for optional phone field in Google signup
+        if (isGoogleSignup && input.name === 'phone' && !input.value.trim()) {
+            formGroup.classList.remove('error');
+            return;
+        }
+        
+        if (!input.value.trim()) {
+            formGroup.classList.add('error');
+            isValid = false;
+        } else if (input.type === 'email' && !isValidEmail(input.value)) {
+            formGroup.classList.add('error');
+            isValid = false;
+        } else if (input.type === 'password' && input.value.length < 6) {
+            formGroup.classList.add('error');
+            isValid = false;
+        } else {
+            formGroup.classList.remove('error');
+        }
+    });
+
+    return isValid;
+}
+
+// Tab switching
+function switchTab(tab) {
+    currentAuthType = tab;
+    isGoogleSignup = false; // Reset Google signup flag
+    
+    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+    const activeTab = document.querySelector(`[onclick="switchTab('${tab}')"]`);
+    if (activeTab) activeTab.classList.add('active');
+    
+    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+    const activeForm = document.getElementById(tab + 'Form');
+    if (activeForm) activeForm.classList.add('active');
+    
+    const title = document.querySelector('.login-title');
+    const subtitle = document.querySelector('.login-subtitle');
+    
+    if (tab === 'login') {
+        if (title) title.textContent = 'Welcome Back!';
+        if (subtitle) subtitle.textContent = 'Sign in to continue your learning journey';
+    } else {
+        if (title) title.textContent = 'Join EDURACK';
+        if (subtitle) subtitle.textContent = 'Create your account and start learning today';
+        // Reset to step 1 when switching to signup
+        resetSignupSteps();
+    }
+}
+
+// Reset signup steps
+function resetSignupSteps() {
+    currentStep = 1;
+    isGoogleSignup = false;
+    
+    const step1 = document.getElementById('signupStep1');
+    const step2 = document.getElementById('signupStep2');
+    
+    if (step1) step1.classList.add('active');
+    if (step2) step2.classList.remove('active');
+    
+    updateProgressIndicator();
+    signupData = {};
+    
+    // Remove phone field if it was added for Google users
+    const phoneGroup = document.querySelector('#signupStep2 input[name="phone"]');
+    if (phoneGroup) {
+        const formGroup = phoneGroup.closest('.form-group');
+        if (formGroup) formGroup.remove();
+    }
+    
+    // Reset button text
+    const submitBtn = document.querySelector('#signupStep2 .btn-primary');
+    if (submitBtn) {
+        submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+    }
+}
+
+// Update progress indicator
+function updateProgressIndicator() {
+    const step1Indicator = document.getElementById('step1Indicator');
+    const step2Indicator = document.getElementById('step2Indicator');
+    const progressLine = document.getElementById('progressLine');
+
+    if (!step1Indicator || !step2Indicator || !progressLine) return;
+
+    if (currentStep === 1) {
+        step1Indicator.classList.add('active');
+        step1Indicator.classList.remove('completed');
+        step2Indicator.classList.remove('active');
+        progressLine.classList.remove('completed');
+    } else if (currentStep === 2) {
+        step1Indicator.classList.remove('active');
+        step1Indicator.classList.add('completed');
+        step2Indicator.classList.add('active');
+        progressLine.classList.add('completed');
+    }
+}
+
+// Handle Step 1 Next
+function handleStep1Next(e) {
+    e.preventDefault();
+    const form = e.target;
+    
+    if (!validateForm(form)) return;
+
+    const password = form.password.value;
+    const confirm = form.confirm.value;
+
+    if (password !== confirm) {
+        const confirmGroup = form.confirm.closest('.form-group');
+        if (confirmGroup) confirmGroup.classList.add('error');
+        return;
+    }
+
+    // Store step 1 data
+    signupData = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone ? form.phone.value.trim() : '',
+        password: password
+    };
+
+    // Move to step 2
+    currentStep = 2;
+    const step1 = document.getElementById('signupStep1');
+    const step2 = document.getElementById('signupStep2');
+    
+    if (step1) step1.classList.remove('active');
+    if (step2) step2.classList.add('active');
+    
+    updateProgressIndicator();
+}
+
+// Go back to step 1
+function goBackToStep1() {
+    if (isGoogleSignup) {
+        // For Google users, going back means canceling the signup
+        alert('Profile completion cancelled. Please try signing up again.');
+        resetSignupSteps();
+        switchTab('login');
+        return;
+    }
+    
+    currentStep = 1;
+    const step1 = document.getElementById('signupStep1');
+    const step2 = document.getElementById('signupStep2');
+    
+    if (step1) step1.classList.add('active');
+    if (step2) step2.classList.remove('active');
+    
+    updateProgressIndicator();
+}
+
+// Email Login Handler
+async function handleEmailLogin(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('.btn-primary');
+    const email = form.email.value;
+    const password = form.password.value;
+
+    if (!validateForm(form)) return;
+
+    if (btn) {
+        btn.classList.add('loading');
+        btn.disabled = true;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert('Login error: ' + (data.message || 'Login failed'));
+            throw new Error(data.message || 'Login failed');
+        }
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userEmail', data.user.email);
+
+        showSuccess('Welcome back! Redirecting to dashboard…');
+        setTimeout(() => {
+            window.location.href = 'home.html';
+        }, 2000);
+
+    } catch (error) {
+        console.error('Login error:', error);
+    } finally {
+        if (btn) {
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        }
+    }
+}
+
+// Email Signup Handler (Step 2)
+async function handleEmailSignup(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('.btn-primary');
+    
+    if (!validateForm(form)) return;
+
+    if (btn) {
+        btn.classList.add('loading');
+        btn.disabled = true;
+    }
+
+    try {
+        if (isGoogleSignup) {
+            // Complete Google user profile
+            const phone = form.phone ? form.phone.value.trim() : null;
+            const completeData = {
+                token: localStorage.getItem('token'),
+                studentClass: form.studentClass.value,
+                exam: form.exam.value,
+                state: form.state.value,
+                phone: phone
+            };
+
+            const response = await fetch(`${API_BASE}/auth/complete-profile`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(completeData),
+                credentials: 'include'
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert('Profile completion error: ' + data.message);
+                throw new Error(data.message);
+            }
+
+            showSuccess('Profile completed successfully! Redirecting to dashboard…');
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 2000);
+
+        } else {
+            // Regular email signup
+            const completeData = {
+                ...signupData,
+                studentClass: form.studentClass.value,
+                exam: form.exam.value,
+                state: form.state.value
+            };
+
+            const response = await fetch(`${API_BASE}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    fullName: completeData.name, 
+                    email: completeData.email, 
+                    phone: completeData.phone, 
+                    password: completeData.password, 
+                    studentClass: completeData.studentClass, 
+                    exam: completeData.exam, 
+                    state: completeData.state 
+                }),
+                credentials: 'include'
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (data.message.includes('Email')) {
+                    alert('This email is already registered. Please use another one.');
+                    goBackToStep1();
+                } else if (data.message.includes('Phone')) {
+                    alert('This phone number is already registered. Please use another one.');
+                    goBackToStep1();
+                } else {
+                    alert('Registration error: ' + data.message);
+                }
+                throw new Error(data.message);
+            }
+
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userEmail', data.user.email);
+
+            showSuccess(`Account created! Your User ID is ${data.user.userID}. Redirecting…`);
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 2000);
+        }
+
+    } catch (error) {
+        console.error('Signup/Profile completion error:', error);
+    } finally {
+        if (btn) {
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        }
+    }
+}
+
+// Social Login Handler (kept for compatibility)
+function socialLogin(provider, type) {
+    if (provider === 'google') {
+        triggerGoogleSignIn();
+    }
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
+// EVENT LISTENERS AND INITIALIZATION
+// ──────────────────────────────────────────────────────────────────────────────
+
+// Clear form errors on input
+function setupFormErrorClear() {
+    document.querySelectorAll('.form-input, .form-select').forEach(input => {
+        input.addEventListener('input', () => {
+            const formGroup = input.closest('.form-group');
+            if (formGroup && formGroup.classList.contains('error')) {
+                formGroup.classList.remove('error');
+            }
+        });
+    });
+}
+
+// Handle script loading errors
+window.addEventListener('error', function(e) {
+    if (e.filename && e.filename.includes('accounts.google.com')) {
+        console.error('🚨 Google Sign-In script failed to load:', e);
+        showGoogleSignInError();
+    }
+});
+
+// DOM Content Loaded Event
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM loaded, initializing...');
+    
+    // Setup form error clearing
+    setupFormErrorClear();
+    
+    // Start Google Sign-In initialization
+    initGoogleSignInWithRetry();
+    
+    // Bind Google buttons after a delay
+    setTimeout(bindGoogleButtons, 1500);
+});
+
+// Window Load Event
+window.addEventListener('load', function() {
+    console.log('🏁 Window loaded, finalizing setup...');
+    
+    // Final Google Sign-In setup
+    setTimeout(() => {
+        if (!googleInitialized) {
+            console.log('🔄 Final initialization attempt...');
+            initGoogleSignInWithRetry();
+        }
+        
+        // Bind buttons again as backup
+        setTimeout(bindGoogleButtons, 500);
+    }, 2000);
+});
+
+// Check if user is already logged in
+if (localStorage.getItem('token')) {
+    showSuccess('You are already logged in. Redirecting…');
+    setTimeout(() => {
+        window.location.href = 'home.html';
+    }, 1500);
+}
+
+// Utility function to check Google Sign-In status (for debugging)
+function checkGoogleSignInStatus() {
+    return {
+        sdkLoaded: typeof google !== 'undefined' && google.accounts,
+        initialized: googleInitialized,
+        attempts: initializationAttempts,
+        clientId: GOOGLE_CLIENT_ID,
+        currentOrigin: getCurrentOrigin(),
+        protocol: window.location.protocol
+    };
+}
+
+// Make functions globally available
+window.handleStep1Next = handleStep1Next;
+window.goBackToStep1 = goBackToStep1;
+window.handleEmailLogin = handleEmailLogin;
+window.handleEmailSignup = handleEmailSignup;
+window.switchTab = switchTab;
+window.socialLogin = socialLogin;
+window.triggerGoogleSignIn = triggerGoogleSignIn;
+window.checkGoogleSignInStatus = checkGoogleSignInStatus;
+
+console.log('🚀 FIXED EDURACK Login Page with Google Sign-In loaded successfully!');
+console.log('🔍 Debug info:', checkGoogleSignInStatus());
+    </script>
+</body>
+</html>

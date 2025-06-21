@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Edurack</title>
+    <link rel="icon" href="https://i.postimg.cc/k4VZLxVN/cropped-circle-image.png" type="image/png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --text-inverse: #ffffff;
+            
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-dark: #0f172a;
+            --bg-card: #ffffff;
+            
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition-normal);
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition-normal);
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+            background: var(--bg-secondary);
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-inverse);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            font-size: 1.125rem;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: var(--transition-normal);
+            margin-top: 0.5rem;
+            z-index: 1001;
+        }
+
+        .user-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition-normal);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary);
+        }
+
+        .dropdown-item i {
+            font-size: 1rem;
+            width: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 80px);
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 2rem 0;
+            overflow-y: auto;
+            z-index: 999;
+            transition: var(--transition-normal);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-lg);
+            transition: var(--transition-normal);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--text-inverse);
+            transform: translateX(5px);
+        }
+
+        .sidebar-link i {
+            font-size: 1.25rem;
+            width: 24px;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1.25rem;
+            left: 1rem;
+            z-index: 1001;
+            background: var(--primary);
+            color: var(--text-inverse);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.75rem;
+            cursor: pointer;
+            font-size: 1.125rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+            transition: var(--transition-normal);
+        }
+
+        .dashboard-header {
+            margin-bottom: 3rem;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: var(--radius-2xl);
+            padding: 3rem;
+            color: var(--text-inverse);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M100 0C44.77 0 0 44.77 0 100s44.77 100 100 100 100-44.77 100-100S155.23 0 100 0zm0 180c-44.18 0-80-35.82-80-80s35.82-80 80-80 80 35.82 80 80-35.82 80-80 80z'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+        }
+
+        .welcome-stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-inverse);
+            font-size: 1.25rem;
+            margin-left: auto;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .action-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid var(--border);
+            transition: var(--transition-normal);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .action-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .action-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--text-inverse);
+            font-size: 1.5rem;
+        }
+
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .action-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .progress-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            background: var(--bg-tertiary);
+            height: 8px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-lg);
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Achievement Badges */
+        .achievements {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .achievement-badge {
+            background: linear-gradient(135deg, var(--accent), var(--warning));
+            color: var(--text-inverse);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-2xl);
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Recent Activity */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Study Streak */
+        .streak-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .streak-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .streak-label {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .streak-fire {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            animation: flicker 2s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Upcoming Tests */
+        .test-list {
+            list-style: none;
+        }
+
+        .test-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+            transition: var(--transition-normal);
+        }
+
+        .test-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .test-info h4 {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .test-date {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .test-action {
+            background: var(--primary);
+            color: var(--text-inverse);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+
+        .test-action:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --bg-card: #1e293b;
+            --border: #334155;
+            --border-light: #475569;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .welcome-section {
+                padding: 2rem;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .welcome-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .dashboard-grid {
+                gap: 1rem;
+            }
+
+            .dashboard-card {
+                padding: 1.5rem;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .logo img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .welcome-title {
+                font-size: 1.75rem;
+            }
+
+            .welcome-subtitle {
+                font-size: 1rem;
+            }
+
+            .welcome-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-right {
+                gap: 1rem;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Success Message */
+        .success-message {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--success);
+            color: var(--text-inverse);
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: var(--transition-normal);
+            font-weight: 500;
+        }
+
+        .success-message.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="#" class="logo">
+                    <img src="https://i.postimg.cc/nV4TrRtj/cropped-circle-image-removebg-preview.png" alt="Edurack">
+                    Edurack
+                </a>
+            </div>
+            
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <div class="user-menu">
+                    <div class="user-avatar" id="userAvatar">
+                        <span id="userInitials">JD</span>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                         <a href="contact.html" class="dropdown-item">
+                            <i class="fas fa-headset"></i>
+                            Support
+                        </a>
+                        <a href="#" class="dropdown-item" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="home.html" class="sidebar-link active">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="pyqs.html" class="sidebar-link">
+                    <i class="fas fa-file-alt"></i>
+                    PYQs
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="Create.html" class="sidebar-link">
+                    <i class="fas fa-plus-circle"></i>
+                    Create Test
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="Arena.html" class="sidebar-link">
+                    <i class="fas fa-trophy"></i>
+                    Arena
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="Premium.html" class="sidebar-link">
+                    <i class="fas fa-crown"></i>
+                    Premium
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="contact.html" class="sidebar-link">
+                    <i class="fas fa-envelope"></i>
+                    Contact Us
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="welcome-content">
+                <h1 class="welcome-title">Welcome back, <span id="userName">John!</span></h1>
+                <p class="welcome-subtitle">Ready to continue your learning journey? Let's achieve your goals together!</p>
+                
+                <div class="welcome-stats">
+                    <div class="welcome-stat">
+                        <span class="stat-number" id="testsCompleted">24</span>
+                        <span class="stat-label">Tests Completed</span>
+                    </div>
+                    <div class="welcome-stat">
+                        <span class="stat-number" id="currentRank">#12</span>
+                        <span class="stat-label">Global Rank</span>
+                    </div>
+                    <div class="welcome-stat">
+                        <span class="stat-number" id="studyStreak">7</span>
+                        <span class="stat-label">Day Streak</span>
+                    </div>
+                    <div class="welcome-stat">
+                        <span class="stat-number" id="averageScore">87%</span>
+                        <span class="stat-label">Average Score</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <a href="Create.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <h3 class="action-title">Create Test</h3>
+                <p class="action-description">Build custom practice tests</p>
+            </a>
+            
+            <a href="pyqs.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3 class="action-title">Practice PYQs</h3>
+                <p class="action-description">Solve previous year questions</p>
+            </a>
+            
+            <a href="Arena.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="action-title">Join Arena</h3>
+                <p class="action-description">Compete with peers</p>
+            </a>
+            
+            <a href="Premium.html" class="action-card">
+                <div class="action-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h3 class="action-title">Go Premium</h3>
+                <p class="action-description">Unlock advanced features</p>
+            </a>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <section class="dashboard-grid">
+            <!-- Study Progress -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Study Progress</h3>
+                        <p class="card-subtitle">Your learning journey</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <span class="progress-label">Physics</span>
+                        <span class="progress-value">87%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 87%"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <span class="progress-label">Chemistry</span>
+                        <span class="progress-value">73%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 73%"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <span class="progress-label">Mathematics</span>
+                        <span class="progress-value">91%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 91%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Streak -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Study Streak</h3>
+                        <p class="card-subtitle">Keep the momentum going!</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                </div>
+                
+                <div class="streak-container">
+                    <div class="streak-fire">🔥</div>
+                    <div class="streak-number">7</div>
+                    <div class="streak-label">Days in a row</div>
+                </div>
+                
+                <div class="achievements">
+                    <div class="achievement-badge">
+                        <i class="fas fa-medal"></i>
+                        Week Warrior
+                    </div>
+                    <div class="achievement-badge">
+                        <i class="fas fa-star"></i>
+                        Top Performer
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Recent Activity</h3>
+                        <p class="card-subtitle">Your latest achievements</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Completed Physics Mock Test</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Won Arena Challenge</div>
+                            <div class="activity-time">5 hours ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Achieved 90% in Chemistry</div>
+                            <div class="activity-time">1 day ago</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Upcoming Tests -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Upcoming Tests</h3>
+                        <p class="card-subtitle">Don't miss these important tests</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                </div>
+                
+                <ul class="test-list">
+                    <li class="test-item">
+                        <div class="test-info">
+                            <h4>JEE Main Mock Test #5</h4>
+                            <div class="test-date">Tomorrow, 10:00 AM</div>
+                        </div>
+                        <button class="test-action">Start</button>
+                    </li>
+                    <li class="test-item">
+                        <div class="test-info">
+                            <h4>Physics Chapter Test</h4>
+                            <div class="test-date">Dec 28, 2:00 PM</div>
+                        </div>
+                        <button class="test-action">Remind</button>
+                    </li>
+                    <li class="test-item">
+                        <div class="test-info">
+                            <h4>Chemistry Weekly Test</h4>
+                            <div class="test-date">Dec 30, 11:00 AM</div>
+                        </div>
+                        <button class="test-action">Remind</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Performance Analytics -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Performance Analytics</h3>
+                        <p class="card-subtitle">Track your improvement</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;">📊</div>
+                    <h4 style="margin-bottom: 0.5rem; color: var(--text-primary);">Excellent Progress!</h4>
+                    <p style="color: var(--text-secondary);">You've improved by 15% this month</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);">+15%</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">This Month</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary);">87%</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Average Score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">Quick Stats</h3>
+                        <p class="card-subtitle">Your learning metrics</p>
+                    </div>
+                    <div class="card-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; text-align: center;">
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">156</div>
+                        <div style="color: var(--text-secondary); font-size: 0.875rem;">Questions Solved</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">42h</div>
+                        <div style="color: var(--text-secondary); font-size: 0.875rem;">Study Time</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem;">8</div>
+                        <div style="color: var(--text-secondary); font-size: 0.875rem;">Badges Earned</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--success); margin-bottom: 0.5rem;">95%</div>
+                        <div style="color: var(--text-secondary); font-size: 0.875rem;">Accuracy Rate</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage">
+        <span id="successText">Success!</span>
+    </div>
+
+    <!-- Firebase SDKs -->
+  <script>
+
+    const API_BASE = '/api'; // Replace with your actual backend base URL
+
+  // DOM Elements
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.getElementById('sidebar');
+  const themeToggle = document.getElementById('themeToggle');
+  const userAvatar = document.getElementById('userAvatar');
+  const userDropdown = document.getElementById('userDropdown');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const successMessage = document.getElementById('successMessage');
+
+  // Sidebar Toggle
+  sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+  });
+
+  // Close sidebar when clicking outside on mobile
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 1024) {
+      if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+        sidebar.classList.remove('active');
+      }
+    }
+  });
+
+  // User Dropdown Toggle
+  userAvatar.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userDropdown.classList.toggle('active');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!userAvatar.contains(e.target) && !userDropdown.contains(e.target)) {
+      userDropdown.classList.remove('active');
+    }
+  });
+
+  // Dark Mode Toggle
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const icon = themeToggle.querySelector('i');
+
+    if (document.body.classList.contains('dark-mode')) {
+      icon.classList.remove('fa-moon');
+      icon.classList.add('fa-sun');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      icon.classList.remove('fa-sun');
+      icon.classList.add('fa-moon');
+      localStorage.setItem('theme', 'light');
+    }
+  });
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+  }
+
+  // Show success message
+  function showSuccess(message) {
+    document.getElementById('successText').textContent = message;
+    successMessage.classList.add('show');
+    setTimeout(() => {
+      successMessage.classList.remove('show');
+    }, 3000);
+  }
+
+async function fetchUser() {
+  const token = localStorage.getItem('token');
+  console.log('Token from localStorage:', token);
+
+  if (!token) {
+    console.warn('No token found, redirecting to login page.');
+    window.location.href = 'index.html';
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/auth/user`, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    });
+
+    console.log('API response status:', res.status);
+
+    if (res.status === 401 || res.status === 403) {
+      console.warn('Unauthorized or Forbidden, clearing token...');
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+      return;
+    }
+
+    if (!res.ok) {
+      console.error('Unexpected error:', res.statusText);
+      return;
+    }
+
+    const data = await res.json();
+    const user = data.user;
+
+    if (!user) {
+      console.warn('No user data returned. Redirecting...');
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+      return;
+    }
+
+    console.log('User data received:', user);
+
+    // Update UI
+    const userNameElem = document.getElementById('userName');
+    if (userNameElem) {
+      userNameElem.textContent = `${user.fullName}`;
+    }
+    const avatarElem = document.getElementById('userAvatar');
+if (avatarElem) {
+  const initials = user.fullName
+    .split(' ')
+    .map(name => name[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2); // Max 2 letters
+  avatarElem.textContent = initials;
+}
+
+    // Store user info in global if needed
+    window.currentUser = user;
+
+  } catch (err) {
+    console.error('Fetch user error:', err);
+    localStorage.removeItem('token');
+    window.location.href = 'index.html';
+  }
+}
+
+
+  // Logout function
+  logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    // Clear token from localStorage
+    localStorage.removeItem('token');
+    showSuccess('Logged out successfully!');
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1500);
+  });
+
+  // Animate progress bars on load
+  window.addEventListener('load', () => {
+    const progressBars = document.querySelectorAll('.progress-fill');
+    progressBars.forEach(bar => {
+      const width = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(() => {
+        bar.style.width = width;
+      }, 500);
+    });
+  });
+
+  // Add click handlers for action cards
+  document.querySelectorAll('.action-card').forEach(card => {
+    card.addEventListener('click', function (e) {
+      e.preventDefault();
+      const href = this.getAttribute('href');
+
+      // Add loading state
+      this.style.opacity = '0.7';
+      this.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 300);
+    });
+  });
+
+  // Add click handlers for test actions
+  document.querySelectorAll('.test-action').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const action = this.textContent;
+
+      if (action === 'Start') {
+        showSuccess('Starting test...');
+        setTimeout(() => {
+          window.location.href = 'Create.html';
+        }, 1500);
+      } else if (action === 'Remind') {
+        this.textContent = 'Reminded!';
+        this.style.background = 'var(--success)';
+        showSuccess('Reminder set successfully!');
+
+        setTimeout(() => {
+          this.textContent = 'Remind';
+          this.style.background = 'var(--primary)';
+        }, 2000);
+      }
+    });
+  });
+
+  // Responsive sidebar handling
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1024) {
+      sidebar.classList.remove('active');
+    }
+  });
+
+  // Add smooth scrolling for better UX
+  document.documentElement.style.scrollBehavior = 'smooth';
+
+  // Initial user fetch
+  fetchUser();
+
+  console.log('🎯 Edurack Dashboard Loaded Successfully!');
+</script>
+
+
+</body>
+</html>

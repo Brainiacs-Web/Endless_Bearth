@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create & List Coupons – Eduracks</title>
+
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --success: #10b981;
+      --error: #ef4444;
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --bg-light: #f8fafc;
+      --bg-field: #ffffff;
+      --border: #e2e8f0;
+      --radius-md: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-primary);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: var(--spacing-lg);
+    }
+
+    .card {
+      background: var(--bg-field);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      max-width: 600px;
+      width: 100%;
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .card h1 {
+      font-size: 1.5rem;
+      margin-bottom: var(--spacing-md);
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="date"],
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      color: var(--text-primary);
+      background: var(--bg-field);
+      transition: border-color 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .checkbox-group {
+      display: flex;
+      gap: var(--spacing-md);
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 0.5rem;
+      accent-color: var(--primary);
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .btn {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .message {
+      margin-top: var(--spacing-md);
+      font-size: 0.95rem;
+      text-align: center;
+      display: none;
+    }
+
+    .message.success {
+      color: var(--success);
+    }
+
+    .message.error {
+      color: var(--error);
+    }
+
+    /* Coupon List */
+    .list-card {
+      background: var(--bg-field);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      max-width: 600px;
+      width: 100%;
+      padding: var(--spacing-lg);
+    }
+
+    .list-card h2 {
+      font-size: 1.25rem;
+      margin-bottom: var(--spacing-md);
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--spacing-md);
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.5rem;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: var(--bg-light);
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    td {
+      background: var(--bg-field);
+      color: var(--text-primary);
+    }
+
+    .refresh-btn {
+      margin-top: var(--spacing-md);
+      width: auto;
+      padding: 0.5rem 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Create Coupon Card -->
+  <div class="card">
+    <h1>Create New Coupon</h1>
+    <form id="createCouponForm">
+      <!-- Coupon Code -->
+      <div class="form-group">
+        <label for="code">Coupon Code</label>
+        <input type="text" id="code" placeholder="E.g., WELCOME10" required />
+      </div>
+
+      <!-- Discount Type -->
+      <div class="form-group">
+        <label for="type">Discount Type</label>
+        <select id="type">
+          <option value="percentage">Percentage (%)</option>
+          <option value="fixed">Fixed Amount (₹)</option>
+        </select>
+      </div>
+
+      <!-- Discount Amount -->
+      <div class="form-group">
+        <label for="amount">Discount Amount</label>
+        <input type="number" id="amount" placeholder="E.g., 10 for 10% or ₹100" min="0" required />
+      </div>
+
+      <!-- Applicable Plans -->
+      <div class="form-group">
+        <label>Applicable Plans</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" value="basic" /> Basic</label>
+          <label><input type="checkbox" value="advanced" /> Advanced</label>
+        </div>
+        <small style="display: block; margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">
+          Leave unchecked to apply to all plans.
+        </small>
+      </div>
+
+      <!-- Expiry Date -->
+      <div class="form-group">
+        <label for="expiresAt">Expiry Date</label>
+        <input type="date" id="expiresAt" />
+        <small style="display: block; margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">
+          Optional. Leave blank for no expiry.
+        </small>
+      </div>
+
+      <button type="submit" class="btn">Create Coupon</button>
+      <p id="createMessage" class="message"></p>
+    </form>
+  </div>
+
+  <!-- List All Coupons Card -->
+  <div class="list-card">
+    <h2>All Coupons</h2>
+    <button id="refreshListBtn" class="btn refresh-btn">Refresh List</button>
+    <table id="couponsTable">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Plans</th>
+          <th>Expires At</th>
+          <th>Usage Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Populated via JavaScript -->
+      </tbody>
+    </table>
+    <p id="listMessage" class="message"></p>
+  </div>
+
+  <script>
+    (function() {
+      // Create Coupon Logic
+      const form = document.getElementById('createCouponForm');
+      const createMsg = document.getElementById('createMessage');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        createMsg.style.display = 'none';
+
+        const codeInput = document.getElementById('code').value.trim().toUpperCase();
+        const typeInput = document.getElementById('type').value;
+        const amountInput = Number(document.getElementById('amount').value);
+        const dateInput = document.getElementById('expiresAt').value;
+        const checkedBoxes = Array.from(document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked'));
+        const applicablePlans = checkedBoxes.map(cb => cb.value);
+
+        const payload = {
+          code: codeInput,
+          type: typeInput,
+          amount: amountInput,
+          applicablePlans: applicablePlans,
+          expiresAt: dateInput ? new Date(dateInput).toISOString() : null
+        };
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating…';
+
+        try {
+          const res = await fetch('/api/coupons/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await res.json();
+          if (res.ok && data.success) {
+            createMsg.className = 'message success';
+            createMsg.textContent = `Coupon "${data.coupon.code}" created successfully.`;
+            form.reset();
+            fetchCouponsList(); // refresh list automatically after creation
+          } else {
+            createMsg.className = 'message error';
+            createMsg.textContent = data.message || 'Failed to create coupon.';
+          }
+        } catch (err) {
+          console.error('Network error:', err);
+          createMsg.className = 'message error';
+          createMsg.textContent = 'Server error. Please try again later.';
+        } finally {
+          createMsg.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create Coupon';
+        }
+      });
+
+      // Fetch & Display Coupons List
+      const refreshBtn = document.getElementById('refreshListBtn');
+      const tableBody = document.querySelector('#couponsTable tbody');
+      const listMsg = document.getElementById('listMessage');
+
+      async function fetchCouponsList() {
+        listMsg.style.display = 'none';
+        tableBody.innerHTML = '';
+        refreshBtn.disabled = true;
+        refreshBtn.textContent = 'Loading…';
+
+        try {
+          const res = await fetch('/api/coupons');
+          const data = await res.json();
+
+          if (!res.ok) {
+            listMsg.className = 'message error';
+            listMsg.textContent = data.message || 'Failed to fetch coupons.';
+            listMsg.style.display = 'block';
+            return;
+          }
+
+          if (!Array.isArray(data) || data.length === 0) {
+            listMsg.className = 'message';
+            listMsg.textContent = 'No coupons found.';
+            listMsg.style.display = 'block';
+            return;
+          }
+
+          // Build table rows
+          data.forEach(coupon => {
+            const tr = document.createElement('tr');
+
+            const plans = Array.isArray(coupon.applicablePlans) && coupon.applicablePlans.length
+              ? coupon.applicablePlans.join(', ')
+              : 'All';
+
+            tr.innerHTML = `
+              <td>${coupon.code}</td>
+              <td>${coupon.type}</td>
+              <td>${coupon.type === 'percentage' ? coupon.amount + '%' : '₹' + coupon.amount}</td>
+              <td>${plans}</td>
+              <td>${coupon.expiresAt ? new Date(coupon.expiresAt).toLocaleDateString() : 'Never'}</td>
+              <td>${coupon.usageCount || 0}</td>
+            `;
+            tableBody.appendChild(tr);
+          });
+        } catch (err) {
+          console.error('Error fetching coupons:', err);
+          listMsg.className = 'message error';
+          listMsg.textContent = 'Server error retrieving coupons.';
+          listMsg.style.display = 'block';
+        } finally {
+          refreshBtn.disabled = false;
+          refreshBtn.textContent = 'Refresh List';
+        }
+      }
+
+      refreshBtn.addEventListener('click', fetchCouponsList);
+
+      // Initial load of the list when page opens
+      fetchCouponsList();
+    })();
+  </script>
+
+</body>
+</html>
