@@ -977,18 +977,21 @@ let isGoogleSignup = false;
 let googleInitialized = false;
 let initializationAttempts = 0;
 
-// Configuration - FIXED redirect URIs
-const API_BASE = 'http://localhost:5000/api';
+// Configuration - auto-detect environment
+const isLocalhost = window.location.hostname === 'localhost';
+
+const API_BASE = isLocalhost
+  ? 'http://localhost:5000/api'
+  : 'https://endless-bearth.onrender.com/api';
+
 const GOOGLE_CLIENT_ID = '255672187375-36d3fhajf7it5asc6s8g6o7aeel97cp3.apps.googleusercontent.com';
 const MAX_INIT_ATTEMPTS = 3;
 
 // Get current origin for redirect URIs
 const getCurrentOrigin = () => {
-    // Handle different environments
-    if (window.location.protocol === 'file:') {
-        return 'http://localhost:5000'; // Fallback for file:// protocol
-    }
-    return window.location.origin;
+  return isLocalhost
+    ? 'http://localhost:5000'
+    : 'https://endless-bearth.onrender.com';
 };
 
 // DOM Elements
